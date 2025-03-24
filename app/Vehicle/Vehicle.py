@@ -19,7 +19,8 @@ class Vehicle:
     coordinates = [] #Coordenadas de longitude e latitude do veículo.
     reservationHistory = [] #Histórico de reservas realizadas pela conta/veículo.
 
-    
+    criticalEnergy = 20
+
     '''
     def __init__ (self, id, owner, licensePlate, energy, criticalEnergy, payment, location):
         self.id = id
