@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.ChargingPoint.ChargingPoint import ChargePoint
+from app.ChargingPoint.ChargingPoint import ChargingPoint
 from app.Vehicle.Vehicle import Vehicle
 from app.Vehicle.User import User
 
@@ -10,9 +10,9 @@ print(" Sistema de recarga de veículos. \n Bem-vinde ;) \n")
 
 
 #Pontos de recarga predefinidos
-p1 = ChargePoint(cid = "1")
-p2 = ChargePoint(cid = "2")
-p3 = ChargePoint(cid = "3")
+p1 = ChargingPoint(cid = "1")
+p2 = ChargingPoint(cid = "2")
+p3 = ChargingPoint(cid = "3")
 
 #Veículo(s) predefinidos
 

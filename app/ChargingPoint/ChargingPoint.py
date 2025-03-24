@@ -4,7 +4,7 @@ from app.Vehicle.Vehicle import Vehicle
 from app.ChargingPoint.Reservation import Reservation
 
 @dataclass
-class ChargePoint:
+class ChargingPoint:
 
     cid: str
     chargingBays = [] # Baias de recarga em cada posto.
