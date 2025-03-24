@@ -1,3 +1,5 @@
+# Repositório: macedoxx2000/vehicle:lastest
+
 # Imagem base para a "build" da imagem atual
 FROM python:3.13.2 
 
