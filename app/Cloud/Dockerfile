@@ -12,4 +12,4 @@ ENV CLOUD_HOST=0.0.0.0
 # Salvando a porta em uma variável de ambiente:
 ENV CLOUD_PORT=64352
 
-CMD ["python", "CloudExec.py"]
+CMD ["python", "CloudServer.py"]
