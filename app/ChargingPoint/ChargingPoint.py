@@ -8,8 +8,8 @@ class ChargePoint:
 
     cid: str
     chargingBays = [] # Baias de recarga em cada posto.
-    
-    coordinates = [] #Coordenadas/localização do ponto de recarga.
+    coordinates2 = [] #Coordenadas/localização do ponto de recarga.testando
+    coordinates = [] #Coordenadas/localização do ponto de recarga.testando ok
     reservationHistory = [] # Lista de reservas feitas no ponto de recarga.
 
     '''def __init__ (self, uid, status, location, time):
