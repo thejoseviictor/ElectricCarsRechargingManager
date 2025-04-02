@@ -15,11 +15,11 @@ class VehicleUtility:
     # Método que cria 2 coordenadas aleatórias dentro do intervalo determinado.
     def defineCoordinates(vehicle: Vehicle):
         
-        x = random.uniform(0,100) # Área de localização representada por matriz de 0 a 100.
-        y = random.uniform(0,100)
+        x = random.randint(0,100) # Área de localização representada por matriz de 0 a 100.
+        y = random.randint(0,100)
         ''' 
         obs:
-        - Para decimais aleatórios: random.uniforme(a,b)
+        - Para decimais aleatórios: random.uniform(a,b)
         - Para inteiros aleatórios: random.randint(a,b)
         '''
         vehicle.definePosition(x,y)
@@ -34,14 +34,25 @@ class VehicleUtility:
     # Método que realiza a simulação de consumo de bateria
     def simulation(vehicle: Vehicle):
         
-        if vehicle.currentEnergy == vehicle.criticalEnergy:
-            request = VehicleClient("0.0.0.0", 600000)
-            request.sendRequest(vehicle)
+        while(True):
+            if vehicle.currentEnergy <= vehicle.criticalEnergy:
+                
+                request = VehicleClient("0.0.0.0", 600000)
+                request.sendRequest(vehicle)
 
-        else:
-            vehicle.currentEnergy -= 10 
-            time.sleep(1)
-        
-        time = 10  # Tempo da contagem em segundos
-        thread = threading.Thread(target=contador, args=(temp,))
-        thread.start()
+            else:
+                vehicle.currentEnergy -= 10
+                time.sleep(1)
+            
+            '''
+            Vai ser utilizado na main para simular o carro rodando 
+            thread = threading.Thread(target = simulation, args=(vehicle,time,))
+            thread.start()
+
+            '''
+    '''0
+    Nesse método há a simulação de viagem de um veículo:
+
+    A cada 2 segundos, o veículo perde 10% da bateria.
+    Ao chegar na energia critical, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
+    '''
