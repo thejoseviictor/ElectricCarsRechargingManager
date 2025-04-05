@@ -1,8 +1,8 @@
-# Esta Classe é Responsável por Armazenar os Dados dos Postos de Recarga em um Arquivo ".json" na Nuvem:
+# Esta Classe é Responsável por Armazenar os Dados dos Postos de Recarga em um Arquivo ".json" na Nuvem.
+# "Charging Station" é o Estabelecimento, Mais Conhecido com Posto.
 
 import json
 import os
-from ReservationsFile import Reservation
 
 class ChargingStationsFile:
     # Inicializando a Classe e seus Atributos:
