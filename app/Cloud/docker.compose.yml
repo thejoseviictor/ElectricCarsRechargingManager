@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  cloud:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: cloud
+    ports:
+      - "64352:64352"
+    networks:
+      - recharging_manager_cloud
+
+networks:
+  recharging_manager_cloud:
+    driver: bridge
