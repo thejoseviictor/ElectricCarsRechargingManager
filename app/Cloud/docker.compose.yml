@@ -9,8 +9,8 @@ services:
     ports:
       - "64352:64352"
     networks:
-      - recharging_manager_cloud
+      - recharging_manager
 
 networks:
-  recharging_manager_cloud:
+  recharging_manager:
     driver: bridge
