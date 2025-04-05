@@ -1,8 +1,8 @@
 # Nuvem Que Será Responsável por Reservar Recargas Para os Carros:
 
 import socket
-from ChargingStations import ChargingStationFile
-from Reservations import ReservationFile
+from ChargingStationsFile import ChargingStationsFile
+from ReservationsFile import ReservationsFile
 
 # Definindo o Host e Post da Nuvem:
 HOST = "0.0.0.0" # Aceita Conexões de Qualquer Dispositivo na Rede.
