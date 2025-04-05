@@ -43,6 +43,7 @@ class ChargingStationsFile:
                 cs["x_position"] = x_position
                 cs["y_position"] = y_position
                 updateStatus = True
+        # Exibindo as Mensagens de Status:
         if updateStatus:
             self.saveChargingStations() # Salvando no Arquivo ".json".
             print(f"\nPosto de Recarga com ID '{id}' Foi Atualizado com Sucesso!\n")
@@ -59,3 +60,22 @@ class ChargingStationsFile:
             self.chargingStationsList.append({"id": id, "x_position": x_position, "y_position": y_position}) # Salvando na Lista.
             self.saveChargingStations() # Salvando no Arquivo ".json".
             print(f"\nPosto de Recarga com ID '{id}' Foi Salvo com Sucesso!\n")
+    
+    # Removendo um Posto do Arquivo ".json":
+    def deleteChargingStation(self, id):
+        newChargingStationsList = [] # Lista de Backup dos Postos.
+        foundStatus = False # Salva o Status de Posto de Recarga Encontrado.
+        for cs in self.chargingStationsList:
+            # Copiando os Postos de Recarga com ID Diferente para uma Nova Lista:
+            if cs["id"] != id:
+                newChargingStationsList.append(cs)
+            # Atualizando o Status, Se o Posto a Ser Removido For Encontrado na Lista:
+            else:
+                foundStatus = True
+        self.chargingStationsList = newChargingStationsList # Restaurando a Lista de Postos.
+        self.saveChargingStations() # Salvando no Arquivo ".json".
+        # Exibindo as Mensagens de Status:
+        if foundStatus:
+            print(f"\nPosto de Recarga com ID '{id}' Foi Removido com Sucesso!\n")
+        else:
+            print(f"\nPosto de Recarga com ID '{id}' Não Foi Encontrado!\n")
