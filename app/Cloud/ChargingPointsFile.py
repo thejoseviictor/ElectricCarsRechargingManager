@@ -64,7 +64,12 @@ class ChargingPointsFile:
             print(f"\nJá Existe um Ponto de Carregamento com ID '{chargingPointID}' no Posto de Recarga '{chargingStationID}'!\n")
         # Salvando o Novo Ponto de Carregamento, Se Não Existir:
         else:
-            self.chargingPointsList.append({"chargingPointID": chargingPointID, "chargingStationID": chargingStationID, "power": power, "kWhPrice": kWhPrice}) # Salvando na Lista.
+            # Salvando na Lista:
+            self.chargingPointsList.append({
+                "chargingPointID": chargingPointID, 
+                "chargingStationID": chargingStationID, 
+                "power": power, 
+                "kWhPrice": kWhPrice})
             self.saveChargingPoints() # Salvando no Arquivo ".json".
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Salvo com Sucesso!\n")
     
