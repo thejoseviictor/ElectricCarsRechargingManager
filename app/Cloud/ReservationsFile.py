@@ -76,21 +76,6 @@ class ReservationsFile:
     def saveReservations(self):
         with open(self.json_file, "w", encoding="utf-8") as file:
             json.dump(self.reservationsList, file, indent=4)
-
-    # NÃO FINALIZADO!
-    # Atualizando os Dados de um Posto de Recarga Específico:
-    def updateReservation(self, id, x_position, y_position):
-        updateStatus = False # Vai Salvar o Status da Atualização.
-        for cs in self.chargingStationsList: # cs = Charging Station.
-            if cs["id"] == id:
-                cs["x_position"] = x_position
-                cs["y_position"] = y_position
-                updateStatus = True
-        if updateStatus:
-            self.saveChargingStations() # Salvando no Arquivo .json.
-            print(f"\nPosto de Recarga com ID '{id}' Foi Atualizado com Sucesso!\n")
-        else:
-            print(f"\nPosto de Recarga com ID '{id}' Não Foi Encontrado!\n")
     
     # NÃO FINALIZADO!
     # Criando uma Reserva no Arquivo .json:
@@ -125,6 +110,7 @@ class ReservationsFile:
         else:
             print(f"\nPonto de Carregamento com ID '{id}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
     
+    # NÃO FINALIZADO (Verificar se tem espaço entre reservas)
     # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
     # Resumindo, Descobrir Quando o Último Veículo Vai Terminar de Usar o Ponto de Carregamento.
     def getLastReservationDateTime(self, reservationObject, chargingPointID):
