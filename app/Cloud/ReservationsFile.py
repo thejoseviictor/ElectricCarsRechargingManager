@@ -74,7 +74,7 @@ class ReservationsFile:
                 searchList.append(reservation)
         return searchList # Retornando as Reservas Encontradas.
 
-    # Salvando a Lista de Reservas no Arquivo .json:
+    # Salvando a Lista de Reservas no Arquivo ".json":
     def saveReservations(self):
         with open(self.json_file, "w", encoding="utf-8") as file:
             json.dump(self.reservationsList, file, indent=4)
@@ -112,16 +112,16 @@ class ReservationsFile:
         return startID
     
     # NÃO FINALIZADO!
-    # Criando uma Reserva no Arquivo .json:
+    # Criando uma Reserva e Salvando no Arquivo ".json":
     def createReservation(self, chargingStationID, chargingPointID, vehicleID, actualBatteryPercentage, batteryCapacity):
-        chargingPointsList = ChargingPointsFile()
-        chargingPointsList.listChargingPoints(chargingStationID)
-        for cp in chargingPointsList:
-            if cp["chargingPointID"] == chargingPointID:
-                chargingPointPower = cp["power"]
-                kWhPrice = cp["kWhPrice"]
-        
-        #id = self.generateReservationID(chargingPointID)
+        # Buscando Informações do Ponto de Carregamento Selecionado.
+        cp = ChargingPointsFile() # cp = Charging Point.
+        cp = cp.findChargingPoint(chargingPointID, chargingStationID) # Salvando a Celular Encontrada.
+        if cp:
+            chargingPointPower = cp["power"]
+            kWhPrice = cp["kWhPrice"]
+        # Gerando o ID da Nova Reserva:
+        reservationID = self.generateReservationID(chargingPointID)
 
         object1 = Reservation(reservationID, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity)
         # Verificando se já existe um posto de recarga com mesmo ID cadastrado:
