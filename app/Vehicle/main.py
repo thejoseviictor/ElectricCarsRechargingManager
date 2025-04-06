@@ -22,9 +22,29 @@ while(close):
 
     print(" Bem vindo(a)! \n")
 
-    print(" Deseja iniciar o sistema? \n")
-    reply = input(" Digite: \n 1. Para sim \n 2. Para não ")
+    print(" O que deseja fazer? \n")
+    reply = input(" Digite: \n 1. Iniciar sistema \n 2. Ver histórico de reservas \n 3. Sair ")
     utility.clearTerminal()
 
-    if(reply == "1"):
-        
+    if reply == "1" :
+        utility.simulation(vehicle)
+    
+    elif reply == "2" :
+        utility.showreservations(vehicle)
+
+        reply = input("\n O que deseja agora: \n 1. Voltar para o início. \n 2. Fechar programa.")
+
+        if reply == "1" :
+            close = True
+            utility.clearTerminal()
+
+        else:
+            close = False
+
+            loadPoints = ["...", "..", ".", ""]
+
+            for p in range (loadPoints):
+                print(f"Encerando o programa {p} ")
+                time.sleep(1)
+                utility.clearTerminal()
+

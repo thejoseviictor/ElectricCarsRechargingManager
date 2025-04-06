@@ -23,7 +23,7 @@ class VehicleUtility:
         vehicle.definePosition(x,y)
 
     # Método que realiza a simulação de consumo de bateria
-    def simulation(vehicle: Vehicle):
+    def simulation(self, vehicle : Vehicle):
         
         situation = True
 
@@ -38,13 +38,21 @@ class VehicleUtility:
             else:
                 decrement = random.randint(0,20) # Variavel utilizada para decremento aleatório da bateria, para simulação 
                 vehicle.currentEnergy -= decrement
+                
+                print(f"\n Bateria: {vehicle.currentEnergy}") # Mostra a bateria na tela constantemente
                 time.sleep(2)
+                self.clearTerminal()
     '''
     Nesse método há a simulação de viagem de um veículo:
     A cada 2 segundos, o veículo perde uma % aleatoria da bateria.
     2 segundos = 1 hora no mundo real
     Ao chegar na energia critica, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
     '''
+
+    def showReservations( vehicle : Vehicle ):
+
+        request = VehicleClient("0.0.0.0", 600000)
+        request.requestReservation(vehicle)
 
     def clearTerminal():
        os.system('cls' if os.name == 'nt' else 'clear')
