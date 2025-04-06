@@ -51,7 +51,7 @@ class ChargingStationsFile:
         else:
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Não Foi Encontrado!\n")
     
-    # Criando um Novo Posto de Recarga no Arquivo ".json":
+    # Criando um Novo Posto de Recarga e Salvando no Arquivo ".json":
     def createChargingStation(self, chargingStationID, x_position, y_position):
         # Verificando Se Já Existe um Posto de Recarga Com Mesmo ID Cadastrado:
         cs = self.findChargingStation(chargingStationID) # Chamando a Função de Procurar na Lista.
