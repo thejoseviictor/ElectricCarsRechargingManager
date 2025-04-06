@@ -3,11 +3,12 @@
 import json
 import os
 import datetime
+from ChargingPointsFile import ChargingPointsFile
 
 class Reservation:
     # Inicializando a Classe e seus Atributos:
-    def __init__(self, id, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity):
-        self.id = id    # ID da Reserva.
+    def __init__(self, reservationID, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity):
+        self.reservationID = reservationID    # ID da Reserva.
         self.chargingStationID = chargingStationID  # ID do Posto de Recarga.
         self.chargingPointID = chargingPointID  # ID do Ponto de Carregamento.
         self.chargingPointPower = chargingPointPower # Potência do Ponto de Carregamento em Watt.
@@ -55,13 +56,13 @@ class ReservationsFile:
                 self.reservationsList = json.load(file) # Salvando os Dados do Arquivo ".json" na Lista.
     
     # Procurando uma Reserva para um Veículo Específico:
-    def findReservation(self, id, vehicleID):
+    def findReservation(self, reservationID, vehicleID):
         # Percorrendo a Lista de Reservas:
         for reservation in self.reservationsList:
-            if reservation["id"] == id and reservation["vehicleID"] == vehicleID:
+            if reservation["reservationID"] == reservationID and reservation["vehicleID"] == vehicleID:
                 return reservation
         else:
-            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
+            print(f"\nReserva com ID '{reservationID}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
             return None
 
     # Listando Todas as Reservas Cadastradas para os Pontos de Carregamento, em um Posto de Recarga Específico:
@@ -105,30 +106,39 @@ class ReservationsFile:
             # Percorrendo Todas as Reservas do Ponto de Carregamento Selecionado:
             if reservation["chargingPointID"] == chargingPointID:
                 # ID Maior ou Igual (Para o Primeiro ID das Reservas):
-                if reservation["id"] >= startID:
-                    startID = reservation["id"] + 1
+                if reservation["reservationID"] >= startID:
+                    startID = reservation["reservationID"] + 1
         return startID
     
     # NÃO FINALIZADO!
     # Criando uma Reserva no Arquivo .json:
-    def createReservation(self, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity):
-        object = Reservation(id, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity)
+    def createReservation(self, chargingStationID, chargingPointID, vehicleID, actualBatteryPercentage, batteryCapacity):
+        chargingPointsList = ChargingPointsFile()
+        chargingPointsList.listChargingPoints(chargingStationID)
+        for cp in chargingPointsList:
+            if cp["chargingPointID"] == chargingPointID:
+                chargingPointPower = cp["power"]
+                kWhPrice = cp["kWhPrice"]
+        
+        #id = self.generateReservationID(chargingPointID)
+
+        object1 = Reservation(reservationID, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity)
         # Verificando se já existe um posto de recarga com mesmo ID cadastrado:
-        if any(cs["id"] == id for cs in self.chargingStationsList): # Se Achar Pelo Menos um Com o Mesmo ID.
-            print(f"\nJá Existe um Posto de Recarga com ID '{id}'!\n")
+        #if any(cs["id"] == id for cs in self.chargingStationsList): # Se Achar Pelo Menos um Com o Mesmo ID.
+            #print(f"\nJá Existe um Posto de Recarga com ID '{id}'!\n")
         # Salvando o novo posto de recarga, se não existir:
-        else:
-            self.chargingStationsList.append({"id": id, "x_position": x_position, "y_position": y_position}) # Salvando na Lista.
-            self.saveChargingStations() # Salvando no Arquivo .json.
-            print(f"\nPosto de Recarga com ID '{id}' Foi Salvo com Sucesso!\n")
+        #else:
+            #self.chargingStationsList.append({"id": id, "x_position": x_position, "y_position": y_position}) # Salvando na Lista.
+            #self.saveChargingStations() # Salvando no Arquivo .json.
+            #print(f"\nPosto de Recarga com ID '{id}' Foi Salvo com Sucesso!\n")
     
     # Removendo uma Reserva de um Veículo Específico:
-    def deleteReservation(self, id, vehicleID):
+    def deleteReservation(self, reservationID, vehicleID):
         newReservationsList = [] # Lista de Backup das Reservas.
         foundStatus = False # Salva o Status de Reserva Encontrada.
         for reservation in self.reservationsList:
             # Atualizando o Status, Se a Reserva a Ser Removida For Encontrada:
-            if reservation["id"] == id and reservation["vehicleID"] == vehicleID:
+            if reservation["reservationID"] == reservationID and reservation["vehicleID"] == vehicleID:
                 foundStatus = True
             # Copiando as Reservas com ID e "VehicleID" Diferentes para uma Nova Lista:
             else:
@@ -137,7 +147,7 @@ class ReservationsFile:
         self.saveReservations() # Salvando no Arquivo ".json".
         # Exibindo as Mensagens de Status:
         if foundStatus:
-            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Foi Removida com Sucesso!\n")
+            print(f"\nReserva com ID '{reservationID}', Para o Veículo com ID '{vehicleID}', Foi Removida com Sucesso!\n")
         else:
-            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
+            print(f"\nReserva com ID '{reservationID}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
             return None
