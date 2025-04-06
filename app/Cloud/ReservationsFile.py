@@ -64,22 +64,22 @@ class ReservationsFile:
             print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
             return None
 
-    # NÃO FINALIZADO!
-    # Listando as Reservas Cadastradas no Arquivo .json:
-    def listReservation(self, chargingStationID):
+    # Listando Todas as Reservas Cadastradas para os Pontos de Carregamento, em um Posto de Recarga Específico:
+    def listReservations(self, chargingStationID):
+        searchList = [] # Onde Serão Salvas as Reservas Encontradas.
         for reservation in self.reservationsList:
-            if reservation["chargingStationID"]
-        return self.chargingStationsList
+            if reservation["chargingStationID"] == chargingStationID:
+                searchList.append(reservation)
+        return searchList # Retornando as Reservas Encontradas.
 
-    # NÃO FINALIZADO!
-    # Salvando a Lista no Arquivo .json:
-    def saveChargingStations(self):
+    # Salvando a Lista de Reservas no Arquivo .json:
+    def saveReservations(self):
         with open(self.json_file, "w", encoding="utf-8") as file:
-            json.dump(self.chargingStationsList, file, indent=4)
+            json.dump(self.reservationsList, file, indent=4)
 
     # NÃO FINALIZADO!
     # Atualizando os Dados de um Posto de Recarga Específico:
-    def updateChargingStation(self, id, x_position, y_position):
+    def updateReservation(self, id, x_position, y_position):
         updateStatus = False # Vai Salvar o Status da Atualização.
         for cs in self.chargingStationsList: # cs = Charging Station.
             if cs["id"] == id:
@@ -104,3 +104,23 @@ class ReservationsFile:
             self.chargingStationsList.append({"id": id, "x_position": x_position, "y_position": y_position}) # Salvando na Lista.
             self.saveChargingStations() # Salvando no Arquivo .json.
             print(f"\nPosto de Recarga com ID '{id}' Foi Salvo com Sucesso!\n")
+    
+    # NÃO FINALIZADO!
+    # Removendo um Ponto de Carregamento do Arquivo ".json":
+    def deleteReservation(self, id, chargingStationID):
+        newChargingPointsList = [] # Lista de Backup dos Pontos de Carregamento.
+        foundStatus = False # Salva o Status de Ponto de Carregamento Encontrado.
+        for cp in self.chargingPointsList:
+            # Atualizando o Status, Se o Ponto de Carregamento a Ser Removido For Encontrado na Lista:
+            if cp["id"] == id and cp["chargingStationID"] == chargingStationID:
+                foundStatus = True
+            # Copiando os Pontos de Carregamento com ID e Posto de Recarga Diferentes para uma Nova Lista:
+            else:
+                newChargingPointsList.append(cp)
+        self.chargingPointsList = newChargingPointsList # Restaurando a Lista de Pontos de Carregamento.
+        self.saveChargingPoints() # Salvando no Arquivo ".json".
+        # Exibindo as Mensagens de Status:
+        if foundStatus:
+            print(f"\nPonto de Carregamento com ID '{id}', no Posto de Recarga '{chargingStationID}', Foi Removido com Sucesso!\n")
+        else:
+            print(f"\nPonto de Carregamento com ID '{id}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
