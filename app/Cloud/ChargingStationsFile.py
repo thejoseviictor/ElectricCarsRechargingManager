@@ -51,21 +51,27 @@ class ChargingStationsFile:
         else:
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Não Foi Encontrado!\n")
     
+    # Gerando um ID para Novo Posto de Recarga:
+    # Os IDs Não Podem Ser Iguais.
+    # IDs Novos: Maior ID + 1.
+    def generateChargingStationID(self):
+        startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
+        for cs in self.chargingStationsList:
+            # ID Maior ou Igual (Para o Primeiro ID dos Postos de Recarga):
+            if cs["chargingStationID"] >= startID:
+                startID = cs["chargingStationID"] + 1
+        return startID
+    
     # Criando um Novo Posto de Recarga e Salvando no Arquivo ".json":
-    def createChargingStation(self, chargingStationID, x_position, y_position):
-        # Verificando Se Já Existe um Posto de Recarga Com Mesmo ID Cadastrado:
-        cs = self.findChargingStation(chargingStationID) # Chamando a Função de Procurar na Lista.
-        if cs: # Se Achar Pelo Menos um Com o Mesmo ID.
-            print(f"\nJá Existe um Posto de Recarga com ID '{chargingStationID}'!\n")
-        # Salvando o Novo Posto de Recarga, Se Não Existir:
-        else:
-            # Salvando na Lista:
-            self.chargingStationsList.append({
-                "chargingStationID": chargingStationID, 
-                "x_position": x_position, 
-                "y_position": y_position})
-            self.saveChargingStations() # Salvando no Arquivo ".json".
-            print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Salvo com Sucesso!\n")
+    def createChargingStation(self, x_position, y_position):
+        chargingStationID = self.generateChargingStationID()
+        # Salvando na Lista:
+        self.chargingStationsList.append({
+            "chargingStationID": chargingStationID, 
+            "x_position": x_position, 
+            "y_position": y_position})
+        self.saveChargingStations() # Salvando no Arquivo ".json".
+        print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Salvo com Sucesso!\n")
     
     # Removendo um Posto do Arquivo ".json":
     def deleteChargingStation(self, chargingStationID):
