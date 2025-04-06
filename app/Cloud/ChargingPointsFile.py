@@ -56,7 +56,7 @@ class ChargingPointsFile:
         else:
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
     
-    # Criando um Novo Ponto de Carregamento no Arquivo ".json":
+    # Criando um Novo Ponto de Carregamento e Salvando no Arquivo ".json":
     def createChargingPoint(self, chargingPointID, chargingStationID, power, kWhPrice):
         # Verificando Se Já Existe um Ponto de Carregamento com Mesmo ID e Posto de Recarga:
         cp = self.findChargingPoint(chargingPointID, chargingStationID) # Percorrendo a Lista de Pontos de Carregamento.
