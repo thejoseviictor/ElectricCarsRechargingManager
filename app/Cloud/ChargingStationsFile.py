@@ -38,11 +38,11 @@ class ChargingStationsFile:
     # Atualizando os Dados de um Posto de Recarga Específico:
     def updateChargingStation(self, id, x_position, y_position):
         updateStatus = False # Vai Salvar o Status da Atualização.
-        for cs in self.chargingStationsList: # cs = Charging Station.
-            if cs["id"] == id:
-                cs["x_position"] = x_position
-                cs["y_position"] = y_position
-                updateStatus = True
+        cs = self.findChargingStation(id) # Chamando a Função de Procurar na Lista.
+        if cs: # cs = Charging Station.
+            cs["x_position"] = x_position
+            cs["y_position"] = y_position
+            updateStatus = True
         # Exibindo as Mensagens de Status:
         if updateStatus:
             self.saveChargingStations() # Salvando no Arquivo ".json".
@@ -53,7 +53,8 @@ class ChargingStationsFile:
     # Criando um Novo Posto de Recarga no Arquivo ".json":
     def createChargingStation(self, id, x_position, y_position):
         # Verificando Se Já Existe um Posto de Recarga Com Mesmo ID Cadastrado:
-        if any(cs["id"] == id for cs in self.chargingStationsList): # Se Achar Pelo Menos um Com o Mesmo ID.
+        cs = self.findChargingStation(id) # Chamando a Função de Procurar na Lista.
+        if cs: # Se Achar Pelo Menos um Com o Mesmo ID.
             print(f"\nJá Existe um Posto de Recarga com ID '{id}'!\n")
         # Salvando o Novo Posto de Recarga, Se Não Existir:
         else:
