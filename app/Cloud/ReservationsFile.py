@@ -77,10 +77,10 @@ class ReservationsFile:
         with open(self.json_file, "w", encoding="utf-8") as file:
             json.dump(self.reservationsList, file, indent=4)
 
-    # NÃO FINALIZADO (Verificar se tem espaço entre reservas)
+    # NÃO FINALIZADO (Verificar Se Tem Espaço Entre Reservas)
     # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
     # Resumindo, Descobrir Quando o Último Veículo Vai Terminar de Usar o Ponto de Carregamento.
-    def getLastReservationDateTime(self, reservationObject, chargingPointID):
+    def getLastReservationDateTime(self, chargingPointID):
         found = False # Indicará Se um Data Posterior For Encontrada.
         lastDateTime = datetime.datetime(1999, 12, 31, 0, 0, 0) # Data de Base para Comparação Inicial.
         # Percorrendo a Lista de Reservas:
@@ -96,9 +96,18 @@ class ReservationsFile:
         # Retorna "None", Se Não Houver Nenhuma Reserva no Ponto de Carregamento:
         else:
             return None
-        
-    def generateReservationID(self):
-        pass
+    
+    # Gerando um ID para Nova Reserva:
+    # Os IDs Não Podem Ser Iguais Para o Mesmo Ponto de Carregamento.
+    def generateReservationID(self, chargingPointID):
+        startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
+        for reservation in self.reservationsList:
+            # Percorrendo Todas as Reservas do Ponto de Carregamento Selecionado:
+            if reservation["chargingPointID"] == chargingPointID:
+                # ID Maior ou Igual (Para o Primeiro ID das Reservas):
+                if reservation["id"] >= startID:
+                    startID = reservation["id"] + 1
+        return startID
     
     # NÃO FINALIZADO!
     # Criando uma Reserva no Arquivo .json:
