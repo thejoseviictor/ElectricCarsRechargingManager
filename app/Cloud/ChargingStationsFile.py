@@ -59,7 +59,11 @@ class ChargingStationsFile:
             print(f"\nJá Existe um Posto de Recarga com ID '{chargingStationID}'!\n")
         # Salvando o Novo Posto de Recarga, Se Não Existir:
         else:
-            self.chargingStationsList.append({"chargingStationID": chargingStationID, "x_position": x_position, "y_position": y_position}) # Salvando na Lista.
+            # Salvando na Lista:
+            self.chargingStationsList.append({
+                "chargingStationID": chargingStationID, 
+                "x_position": x_position, 
+                "y_position": y_position})
             self.saveChargingStations() # Salvando no Arquivo ".json".
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Salvo com Sucesso!\n")
     
