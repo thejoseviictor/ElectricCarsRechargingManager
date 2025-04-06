@@ -54,15 +54,14 @@ class ReservationsFile:
             with open(self.json_file, "r", encoding="utf-8") as file:
                 self.reservationsList = json.load(file) # Salvando os Dados do Arquivo ".json" na Lista.
     
-    # NÃO FINALIZADO!
-    # Procurando uma Reserva Específica:
-    def findReservation(self, id):
-        # Percorrendo a Lista:
+    # Procurando uma Reserva para um Veículo Específico:
+    def findReservation(self, id, vehicleID):
+        # Percorrendo a Lista de Reservas:
         for reservation in self.reservationsList:
-            if reservation["id"] == id:
+            if reservation["id"] == id and reservation["vehicleID"] == vehicleID:
                 return reservation
         else:
-            print(f"\nReserva com ID '{id}' Não Foi Encontrada!\n")
+            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
             return None
 
     # NÃO FINALIZADO!
