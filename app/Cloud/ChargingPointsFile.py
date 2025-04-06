@@ -56,22 +56,31 @@ class ChargingPointsFile:
         else:
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
     
+    # Gerando um ID para Novo Ponto de Carregamento:
+    # Os IDs Não Podem Ser Iguais Para o Mesmo Posto de Recarga.
+    # IDs Novos: Maior ID + 1.
+    def generateChargingPointID(self, chargingStationID):
+        startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
+        for cp in self.chargingPointsList:
+            # Percorrendo Todos os Pontos de Carregamento do Mesmo Posto de Recarga Selecionado:
+            if cp["chargingStationID"] == chargingStationID:
+                # ID Maior ou Igual (Para o Primeiro ID dos Pontos de Carregamento):
+                if cp["chargingPointID"] >= startID:
+                    startID = cp["chargingPointID"] + 1
+        return startID
+    
     # Criando um Novo Ponto de Carregamento e Salvando no Arquivo ".json":
-    def createChargingPoint(self, chargingPointID, chargingStationID, power, kWhPrice):
-        # Verificando Se Já Existe um Ponto de Carregamento com Mesmo ID e Posto de Recarga:
-        cp = self.findChargingPoint(chargingPointID, chargingStationID) # Percorrendo a Lista de Pontos de Carregamento.
-        if cp: # Se Achar Pelo Menos um Com o Mesmo ID e Posto de Recarga.
-            print(f"\nJá Existe um Ponto de Carregamento com ID '{chargingPointID}' no Posto de Recarga '{chargingStationID}'!\n")
-        # Salvando o Novo Ponto de Carregamento, Se Não Existir:
-        else:
-            # Salvando na Lista:
-            self.chargingPointsList.append({
-                "chargingPointID": chargingPointID, 
-                "chargingStationID": chargingStationID, 
-                "power": power, 
-                "kWhPrice": kWhPrice})
-            self.saveChargingPoints() # Salvando no Arquivo ".json".
-            print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Salvo com Sucesso!\n")
+    def createChargingPoint(self, chargingStationID, power, kWhPrice):
+        # Gerando o ID do Ponto de Carregamento:
+        chargingPointID = self.generateChargingPointID(chargingStationID)
+        # Salvando na Lista:
+        self.chargingPointsList.append({
+            "chargingPointID": chargingPointID, 
+            "chargingStationID": chargingStationID, 
+            "power": power, 
+            "kWhPrice": kWhPrice})
+        self.saveChargingPoints() # Salvando no Arquivo ".json".
+        print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Salvo com Sucesso!\n")
     
     # Removendo um Ponto de Carregamento do Arquivo ".json":
     def deleteChargingPoint(self, chargingPointID, chargingStationID):
