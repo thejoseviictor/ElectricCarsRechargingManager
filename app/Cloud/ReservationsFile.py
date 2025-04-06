@@ -76,6 +76,29 @@ class ReservationsFile:
     def saveReservations(self):
         with open(self.json_file, "w", encoding="utf-8") as file:
             json.dump(self.reservationsList, file, indent=4)
+
+    # NÃO FINALIZADO (Verificar se tem espaço entre reservas)
+    # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
+    # Resumindo, Descobrir Quando o Último Veículo Vai Terminar de Usar o Ponto de Carregamento.
+    def getLastReservationDateTime(self, reservationObject, chargingPointID):
+        found = False # Indicará Se um Data Posterior For Encontrada.
+        lastDateTime = datetime.datetime(1999, 12, 31, 0, 0, 0) # Data de Base para Comparação Inicial.
+        # Percorrendo a Lista de Reservas:
+        for reservation in self.reservationsList:
+            if reservation["chargingPointID"] == chargingPointID:
+                dateTimeInFile = datetime.datetime.fromisoformat(reservation["finishDateTime"]) # Decodificando a Data na Lista para DateTime.
+                # Salvando, Se a Data na Lista For Posterior:
+                if lastDateTime < dateTimeInFile:
+                    found = True # Alterando o Status de Data Posterior Encontrada.
+                    lastDateTime = dateTimeInFile 
+        if found:
+            return lastDateTime.isoformat() # Retornando a Data Encontrada Codificada em ISO.
+        # Retorna "None", Se Não Houver Nenhuma Reserva no Ponto de Carregamento:
+        else:
+            return None
+        
+    def generateReservationID(self):
+        pass
     
     # NÃO FINALIZADO!
     # Criando uma Reserva no Arquivo .json:
@@ -108,24 +131,4 @@ class ReservationsFile:
             print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Foi Removida com Sucesso!\n")
         else:
             print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
-            return None
-    
-    # NÃO FINALIZADO (Verificar se tem espaço entre reservas)
-    # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
-    # Resumindo, Descobrir Quando o Último Veículo Vai Terminar de Usar o Ponto de Carregamento.
-    def getLastReservationDateTime(self, reservationObject, chargingPointID):
-        found = False # Indicará Se um Data Posterior For Encontrada.
-        lastDateTime = datetime.datetime(1999, 12, 31, 0, 0, 0) # Data de Base para Comparação Inicial.
-        # Percorrendo a Lista de Reservas:
-        for reservation in self.reservationsList:
-            if reservation["chargingPointID"] == chargingPointID:
-                dateTimeInFile = datetime.datetime.fromisoformat(reservation["finishDateTime"]) # Decodificando a Data na Lista para DateTime.
-                # Salvando, Se a Data na Lista For Posterior:
-                if lastDateTime < dateTimeInFile:
-                    found = True # Alterando o Status de Data Posterior Encontrada.
-                    lastDateTime = dateTimeInFile 
-        if found:
-            return lastDateTime.isoformat() # Retornando a Data Encontrada Codificada em ISO.
-        # Retorna "None", Se Não Houver Nenhuma Reserva no Ponto de Carregamento:
-        else:
             return None
