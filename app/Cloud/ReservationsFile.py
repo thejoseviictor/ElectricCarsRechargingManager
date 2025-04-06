@@ -6,8 +6,8 @@ import datetime
 
 class Reservation:
     # Inicializando a Classe e seus Atributos:
-    def __init__(self, ID, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity):
-        self.ID = ID    # ID da Reserva.
+    def __init__(self, id, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, vehicleID, actualBatteryPercentage, batteryCapacity):
+        self.id = id    # ID da Reserva.
         self.chargingStationID = chargingStationID  # ID do Posto de Recarga.
         self.chargingPointID = chargingPointID  # ID do Ponto de Carregamento.
         self.chargingPointPower = chargingPointPower # Potência do Ponto de Carregamento em Watt.
@@ -90,25 +90,25 @@ class ReservationsFile:
             self.saveChargingStations() # Salvando no Arquivo .json.
             print(f"\nPosto de Recarga com ID '{id}' Foi Salvo com Sucesso!\n")
     
-    # NÃO FINALIZADO!
-    # Removendo um Ponto de Carregamento do Arquivo ".json":
-    def deleteReservation(self, id, chargingStationID):
-        newChargingPointsList = [] # Lista de Backup dos Pontos de Carregamento.
-        foundStatus = False # Salva o Status de Ponto de Carregamento Encontrado.
-        for cp in self.chargingPointsList:
-            # Atualizando o Status, Se o Ponto de Carregamento a Ser Removido For Encontrado na Lista:
-            if cp["id"] == id and cp["chargingStationID"] == chargingStationID:
+    # Removendo uma Reserva de um Veículo Específico:
+    def deleteReservation(self, id, vehicleID):
+        newReservationsList = [] # Lista de Backup das Reservas.
+        foundStatus = False # Salva o Status de Reserva Encontrada.
+        for reservation in self.reservationsList:
+            # Atualizando o Status, Se a Reserva a Ser Removida For Encontrada:
+            if reservation["id"] == id and reservation["vehicleID"] == vehicleID:
                 foundStatus = True
-            # Copiando os Pontos de Carregamento com ID e Posto de Recarga Diferentes para uma Nova Lista:
+            # Copiando as Reservas com ID e "VehicleID" Diferentes para uma Nova Lista:
             else:
-                newChargingPointsList.append(cp)
-        self.chargingPointsList = newChargingPointsList # Restaurando a Lista de Pontos de Carregamento.
-        self.saveChargingPoints() # Salvando no Arquivo ".json".
+                newReservationsList.append(reservation)
+        self.reservationsList = newReservationsList # Restaurando a Lista de Reservas, Sem a Removida.
+        self.saveReservations() # Salvando no Arquivo ".json".
         # Exibindo as Mensagens de Status:
         if foundStatus:
-            print(f"\nPonto de Carregamento com ID '{id}', no Posto de Recarga '{chargingStationID}', Foi Removido com Sucesso!\n")
+            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Foi Removida com Sucesso!\n")
         else:
-            print(f"\nPonto de Carregamento com ID '{id}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
+            print(f"\nReserva com ID '{id}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
+            return None
     
     # NÃO FINALIZADO (Verificar se tem espaço entre reservas)
     # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
