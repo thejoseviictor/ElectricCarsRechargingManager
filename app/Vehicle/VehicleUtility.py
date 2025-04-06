@@ -5,10 +5,8 @@ from app.Vehicle.Vehicle import Vehicle
 
 
 import random
-import math
 import time
-import threading
-
+import os
 @dataclass
 class VehicleUtility:
     
@@ -23,36 +21,32 @@ class VehicleUtility:
         - Para inteiros aleatórios: random.randint(a,b)
         '''
         vehicle.definePosition(x,y)
-    
-    # Método que calcula a distância entre 2 pontos.
-    def defineDistance(xV:int, yV:int, xP:int, yP:int):
-
-        distance = math.sqrt( ((xP - xV)**2) + ((yP - yV)**2) )
-
-        return distance
 
     # Método que realiza a simulação de consumo de bateria
     def simulation(vehicle: Vehicle):
         
-        while(True):
+        situation = True
+
+        while(situation):
+            
             if vehicle.currentEnergy <= vehicle.criticalEnergy:
                 
                 request = VehicleClient("0.0.0.0", 600000)
                 request.sendRequest(vehicle)
+                situation = False
 
             else:
-                vehicle.currentEnergy -= 10
-                time.sleep(1)
-            
-            '''
-            Vai ser utilizado na main para simular o carro rodando 
-            thread = threading.Thread(target = simulation, args=(vehicle,time,))
-            thread.start()
-
-            '''
-    '''0
-    Nesse método há a simulação de viagem de um veículo:
-
-    A cada 2 segundos, o veículo perde 10% da bateria.
-    Ao chegar na energia critical, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
+                decrement = random.randint(0,20) # Variavel utilizada para decremento aleatório da bateria, para simulação 
+                vehicle.currentEnergy -= decrement
+                time.sleep(2)
     '''
+    Nesse método há a simulação de viagem de um veículo:
+    A cada 2 segundos, o veículo perde uma % aleatoria da bateria.
+    2 segundos = 1 hora no mundo real
+    Ao chegar na energia critica, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
+    '''
+
+    def clearTerminal():
+       os.system('cls' if os.name == 'nt' else 'clear')
+        
+    
