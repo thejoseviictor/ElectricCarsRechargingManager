@@ -48,6 +48,7 @@ class ReservationsFile:
     def __init__(self, json_file="reservations.json"):
         self.json_file = json_file
         self.reservationsList = [] # Lista de Reservas.
+        self.readReservations() # Recuperando os Dados do Arquivo ".json"
     
     # Lendo as Reservas no Arquivo ".json":
     def readReservations(self):
