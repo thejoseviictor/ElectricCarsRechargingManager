@@ -103,6 +103,7 @@ class ReservationsFile:
     
     # Gerando um ID para Nova Reserva:
     # Os IDs Não Podem Ser Iguais Para o Mesmo Ponto de Carregamento.
+    # IDs Novos: Maior ID + 1.
     def generateReservationID(self, chargingPointID):
         startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
         for reservation in self.reservationsList:
