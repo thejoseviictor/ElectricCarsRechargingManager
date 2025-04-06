@@ -35,7 +35,8 @@ class VehicleClient:
             "vid": vehicle.vid ,
             "x": vehicle.coordinates(0) ,
             "y": vehicle.coordinates(1) ,
-            "battery": vehicle.currentEnergy
+            "actualBatteryPercentage": vehicle.currentEnergy ,
+            "batteryCapacity" : vehicle.maximumBattery
         }
 
         # Cria um json baseado no dicionário "vData" e envia as informações para o servidor (Nuvem).

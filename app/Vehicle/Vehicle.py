@@ -15,6 +15,7 @@ class Vehicle:
     criticalEnergy: int
     distanceFromDestination: int
     distanceFromChargingStation: int
+    maximumBattery : int
 
     coordinates = [] #Coordenadas de longitude e latitude do veículo.
     reservationHistory = [] #Histórico de reservas realizadas pela conta/veículo.
