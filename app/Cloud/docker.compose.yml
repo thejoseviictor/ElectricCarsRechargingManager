@@ -10,6 +10,8 @@ services:
       - "64352:64352"
     networks:
       - recharging_manager
+    expose:
+      - "64352"
 
 networks:
   recharging_manager:
