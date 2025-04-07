@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: cloud
+    container_name: cloud_server
     ports:
       - "64352:64352"
     networks:
@@ -15,4 +15,4 @@ services:
 
 networks:
   recharging_manager:
-    driver: bridge
+    external: true
