@@ -29,6 +29,7 @@ def receiveFullJson(conn):
 # Atende ao Cliente, Lê os Dados Recebidos, Faz as Manipulações Necessárias no Banco de Dados, Envia a Resposta e Fecha a Conexão:
 def handleClient(conn, addr):
     print(f"\nConectado a '{addr}'\n")
+    # "try" e "finally" Para Garantir Que a Conexão Seja Encerrada ao Final, Mesmo Se Houverem Problemas:
     try:
         # Mantendo no Loop Enquanto Dados do Dispositivo São Recebidos:
         while True:
