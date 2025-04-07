@@ -72,6 +72,7 @@ class ChargingStationsFile:
             "y_position": y_position})
         self.saveChargingStations() # Salvando no Arquivo ".json".
         print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Salvo com Sucesso!\n")
+        return chargingStationID # Retornando o ID do Posto de Recarga Criado.
     
     # Removendo um Posto do Arquivo ".json":
     def deleteChargingStation(self, chargingStationID):
