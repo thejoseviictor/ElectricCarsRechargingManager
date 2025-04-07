@@ -104,5 +104,7 @@ class ChargingPointsFile:
         # Exibindo as Mensagens de Status:
         if foundStatus:
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Removido com Sucesso!\n")
+            return foundStatus # Retornando o Status.
         else:
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
+            return foundStatus # Retornando o Status.
