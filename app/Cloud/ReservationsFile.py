@@ -21,15 +21,15 @@ class Reservation:
         self.price = self.calculatePrice()  # Preço da Recarga.
 
     # Calculando o Preço da Recarga:
-    # kWh = (Potência do Carregador (Watt) * Tempo (Horas)) / 1000
+    # kWh = Potência do Carregador (Watt) * Tempo (Horas)
     def calculatePrice(self):
-        kWh = (self.chargingPointPower * self.duration) / 1000
+        kWh = self.chargingPointPower * self.duration
         return kWh * self.kWhPrice
 
     # Calculando o Tempo para Completar a Carga de Bateria do Veículo:
     # Tempo (Horas) = ((Carga Desejada - Carga Atual) * Capacidade da Bateria (kWh)) / Potência do Carregador (kW)
     def calculateDuration(self, actualBatteryPercentage: int, batteryCapacity: float):
-        return ((100 - actualBatteryPercentage) * batteryCapacity) / (self.chargingPointPower / 1000)
+        return ((100 - actualBatteryPercentage) * batteryCapacity) / self.chargingPointPower
 
     # Novas Reservas São Feitas para 5 Minutos Após a Última Reserva Cadastrada no Ponto de Carregamento:
     def calculateStartDateTime(self, lastReservationFinishDateTime):
