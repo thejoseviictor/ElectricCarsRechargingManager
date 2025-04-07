@@ -46,7 +46,7 @@ class ChargingPointsFile:
         updateStatus = False # Vai Salvar o Status da Atualização.
         cp = self.findChargingPoint(chargingPointID, chargingStationID) # Percorrendo a Lista de Pontos de Carregamento.
         if cp:
-            cp["power"] = power # Potência do Carregador em Watt.
+            cp["power"] = power # Potência do Carregador em kW.
             cp["kWhPrice"] = kWhPrice
             cp["availability"] = availability # "livre", "ocupado" ou "reservado".
             updateStatus = True
@@ -80,7 +80,7 @@ class ChargingPointsFile:
         self.chargingPointsList.append({
             "chargingPointID": chargingPointID, 
             "chargingStationID": chargingStationID, 
-            "power": power, # Potência do Carregador em Watt.
+            "power": power, # Potência do Carregador em kW.
             "kWhPrice": kWhPrice,
             "availability": availabilty # "livre", "ocupado" ou "reservado".
             })
