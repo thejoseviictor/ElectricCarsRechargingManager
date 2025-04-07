@@ -1,7 +1,7 @@
 ''' Classe responsável por manter métodos de definição de informações e simulações do veículo '''
 from dataclasses import dataclass
-from app.Vehicle.VehicleClient import VehicleClient
-from app.Vehicle.Vehicle import Vehicle
+from VehicleClient import VehicleClient
+from Vehicle import Vehicle
 
 
 import random
@@ -11,7 +11,7 @@ import os
 class VehicleUtility:
     
     # Método que cria 2 coordenadas aleatórias dentro do intervalo determinado.
-    def defineCoordinates(vehicle: Vehicle):
+    def defineCoordinates(self, vehicle: Vehicle):
         
         x = random.randint(0,100) # Área de localização representada por matriz de 0 a 100.
         y = random.randint(0,100)
@@ -23,11 +23,7 @@ class VehicleUtility:
         vehicle.definePosition(x,y)
 
     # Método que realiza a simulação de consumo de bateria
-    def simulation(self, vehicle : Vehicle):
-        
-        host = os.environ.get("HOST")
-        port = int ( os.environ.get("PORT") )
-
+    def simulation(self, vehicle : Vehicle, host: str, port: int):
         situation = True
 
         while(situation):
@@ -35,8 +31,10 @@ class VehicleUtility:
             if vehicle.currentEnergy <= vehicle.criticalEnergy:
                 
                 self.defineCoordinates(vehicle)
-                request = VehicleClient(host, port)
+
+                request = VehicleClient(server_host= host, server_port= port)
                 request.sendRequest(vehicle)
+                
                 situation = False
 
             else:
@@ -53,12 +51,11 @@ class VehicleUtility:
     Ao chegar na energia critica, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
     '''
 
-    def showReservations( vehicle : Vehicle ):
+    def showReservations(self, vehicle : Vehicle , host:str, port: int):
 
-        request = VehicleClient("0.0.0.0", 600000)
+        request = VehicleClient(host,port)
         request.requestReservation(vehicle)
 
+    @staticmethod
     def clearTerminal():
        os.system('cls' if os.name == 'nt' else 'clear')
-        
-    

@@ -1,7 +1,7 @@
 # Classe responsável pela comunicação entre cliente (Veículo) e servidor (Nuvem)
 
 from dataclasses import dataclass
-from app.Vehicle import Vehicle
+from Vehicle import Vehicle
 
 import os
 import socket
@@ -13,14 +13,6 @@ class VehicleClient:
     server_host: str
     server_port: int
 
-    def __init__(self, server_host: str, server_port: int):
-        
-        # Endereço e porta do servidor (Nuvem) ao qual conectar.
-        self.host = server_host # O mesmo IP do servidor.
-        self.port = server_port # A porta usada pelo servidor.
-        
-        
-
     def sendRequest(self, vehicle: Vehicle): # Envia uma requisição e dados do client (Veículo) para o servidor (Nuvem).
         
         # Criação do socket para a entidade vehicle.
@@ -29,7 +21,7 @@ class VehicleClient:
         # STREAM (baseado no protocolo TCP).
         # Conecta client(Veículo) com servidor (Nuvem)
 
-        vehicle_socket.connect((self.host, self.port))
+        vehicle_socket.connect((self.server_host, self.server_port))
 
         # Dicionário utilizado para selecionar os dados pertinentes para a nuvem ao pedir uma reserva
         vData = {
@@ -55,7 +47,7 @@ class VehicleClient:
     def requestReservation(self, vehicle:Vehicle):
 
         vehicle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        vehicle_socket.connect((self.host, self.port))
+        vehicle_socket.connect((self.server_host, self.server_port))
 
         # Dicionário utilizado para selecionar os dados pertinentes para a nuvem ao pedir uma reserva
         vData = {

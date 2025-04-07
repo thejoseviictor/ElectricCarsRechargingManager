@@ -1,0 +1,17 @@
+
+{
+    "host" : "cloud_server" ,
+    "port" : 65432 ,
+
+    "cpf_user" : "12345678910" ,
+    "name_user" : "João José Thiago da Silva" ,
+    "email_user" : "jjt@gmail.com" ,
+    "password_user" : "123456car" ,
+
+
+    "license_plate_vehicle" : "JJT2O25" ,
+    "money_credit_vehicle" : 200.00 ,
+    "current_energy_vehicle" : 100 ,
+    "critical_energy_vehicle" : 20 
+
+}
