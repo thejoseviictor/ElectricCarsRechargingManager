@@ -84,6 +84,7 @@ class ChargingPointsFile:
             })
         self.saveChargingPoints() # Salvando no Arquivo ".json".
         print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Salvo com Sucesso!\n")
+        return chargingPointID # Retornando o ID do Ponto de Carregamento Criado.
     
     # Removendo um Ponto de Carregamento do Arquivo ".json":
     def deleteChargingPoint(self, chargingPointID, chargingStationID):
