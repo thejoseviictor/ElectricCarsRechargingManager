@@ -167,6 +167,7 @@ class ReservationsFile:
         # Exibindo as Mensagens de Status:
         if foundStatus:
             print(f"\nReserva com ID '{reservationID}', Para o Veículo com ID '{vehicleID}', Foi Removida com Sucesso!\n")
+            return foundStatus # Retornando "True"
         else:
             print(f"\nReserva com ID '{reservationID}', Para o Veículo com ID '{vehicleID}', Não Foi Encontrada!\n")
-            return None
+            return foundStatus # Retornando "False"
