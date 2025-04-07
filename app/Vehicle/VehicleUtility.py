@@ -59,3 +59,12 @@ class VehicleUtility:
     @staticmethod
     def clearTerminal():
        os.system('cls' if os.name == 'nt' else 'clear')
+    
+    def endAnimation(self):
+
+        loadPoints = ["...", "..", ".", ""]
+
+        for p in loadPoints:
+            print(f"Encerando o programa {p} ")
+            time.sleep(1)
+            self.clearTerminal()

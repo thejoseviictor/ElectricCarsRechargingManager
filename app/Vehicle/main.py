@@ -1,17 +1,42 @@
+'''
+Autor: João Victor Macedo dos Santos Lima
+Grupo: João Macedo, José Vitor e Thiago 
+
+Componente Curricular: TEC502 - MI - Concorrência e conectividade 
+
+Concluido em: 07/04/2025;
+
+Declaro que este código foi elaborado por mim e pelo meu grupo de forma individualmnte 
+e não contém nenhum trecho de código de outro colega ou de outro autor, tais como provindos 
+de livros e  apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de 
+código de outra autoria que não a minha está destacado com uma citação para o autor e a fonte 
+do código, e estou ciente que estes trechos não serão considerados para fins de avaliação.
+
+'''
+
 ''' Classe main do veiculo'''
 
-import time
-import random
-import sys
-import json
-import os
+import time # Biblioteca usada para fluxos e simulações de tempo
+import random # Biblioteca usada para gerar dados e valores aleatórios
+
+'''
+Bibliotecas usadas para trabalhar com o fluxo entre diretórios e entradas 
+e saidas diretamente com o sistema/terminal
+
+'''
+import sys 
+import os 
+
+import json # Biblioteca usada para trabalhar com arquivos .json e importar dados fictícios para o sistema
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
+# Importação de classes base para o funcionamnto do sisteema
 from Vehicle import Vehicle
 from VehicleUtility import VehicleUtility
 from User import User
 
-repeat = True
+repeat = True # Variavel usada para lidar com o fluxo de repetição do programa
 
 # Definindo os objetos e as suas informações:
 
@@ -51,10 +76,14 @@ server_port = date["port"]
 
 # Métodos utilitários --------------------------------------------------------------------------
 
-utility = VehicleUtility()
+''' Classe de utilidades, nela há a chamada para processos de comunicação,
+    processos de exibição amigável ao úsuario e entre outro processos
+'''
+utility = VehicleUtility() 
 
 # ---------------------------------------------------------------------------------------------
 
+# Início do sistema
 
 while(repeat):
 
@@ -72,9 +101,9 @@ while(repeat):
     
     while(wrongDate):
 
-        login = input("LOGIN: \t ") # Login com cpf ou email do usuário
+        login = input("LOGIN: \t ") # Pede o login com cpf ou email do usuário (jjt@gmail.com ou 12345678910)
         utility.clearTerminal()
-        password = input("SENHA: \t ") # Senha de úsuario
+        password = input("SENHA: \t ") # Pede a senha de úsuario (123456car)
         utility.clearTerminal()
 
 
@@ -95,6 +124,28 @@ while(repeat):
     reply = input(" Digite: \n 1. Iniciar sistema \n 2. Ver histórico de reservas \n 3. Sair \n\n -> ")
     utility.clearTerminal()
 
+    '''
+    Apresenta 3 opções de execução do programa:
+    
+    1. A opção 1 é para entrar na simulação onde o sistema do carro é iniciado e 
+    consome a bateria a medida que se locomove
+
+    obs:    .A bateria é decrementada de forma aleatória para simular um carro em 
+            movimento ou parado
+
+            .O decremento ocorre a cada 2 segundos (2 segundos é o correspondente a cada 
+            1 hora de uso do veículo )
+
+            .
+
+    2. A opção 2 é usada para ver a reserva do veículo
+    
+    obs:    .Dentro da opção 2, após ver a reserva, há a opção de voltar para o início o encerrar o programa definitivamente
+
+    3. A opção 3 é para encerrar o sistema completamente. 
+
+    '''
+
     if reply == "1" :
         utility.simulation(vehicle, server_host, server_port)
     
@@ -109,20 +160,8 @@ while(repeat):
 
         else:
             repeat = False
-
-        loadPoints = ["...", "..", ".", ""]
-
-        for p in range (loadPoints):
-            print(f"Encerando o programa {p} ")
-            time.sleep(1)
-            utility.clearTerminal()
+            utility.endAnimation()
 
     else:
         repeat = False
-
-        loadPoints = ["...", "..", ".", ""]
-
-        for p in loadPoints:
-            print(f"Encerando o programa {p} ")
-            time.sleep(1)
-            utility.clearTerminal()
+        utility.endAnimation()
