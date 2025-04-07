@@ -67,6 +67,18 @@ while True:
                     # Respondendo Com o Texto "None" em uma String, Se Não Houverem Reservas Para o Veículo:
                     else:
                         conn.sendall(b"None")
+                # Excluindo a Reserva do Veículo:
+                # Chaves Esperadas: "reservationID", "vehicleID" e "deleteReservation".
+                if "deleteReservation" in data:
+                    reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
+                    reservations = reservations.deleteReservation(data["reservationID"], data["vehicleID"]) # Excluindo a Reserva.
+                    # Reserva Excluida Com Sucesso:
+                    if reservations:
+                        conn.sendall(b"Sucesso")
+                    # Reserva Não Encontrada:
+                    else:
+                        conn.sendall(b"None")
+
         # Finalizando, Se Não Houverem Dados:
         else:
             break
