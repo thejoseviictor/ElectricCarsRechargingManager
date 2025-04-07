@@ -150,6 +150,7 @@ class ReservationsFile:
                 "price": reservationObj.price})
             self.saveReservations() # Salvando no Arquivo .json.
             print(f"\nReserva para Veículo com ID '{vehicleID}' Foi Criada com Sucesso!\n")
+            return self.findReservation(vehicleID) # Retornando a Reserva Criada.
     
     # Removendo uma Reserva de um Veículo Específico:
     def deleteReservation(self, reservationID, vehicleID):
