@@ -230,7 +230,7 @@ def handleClient(conn, addr):
 def startCloud():
     # Definindo o Host e Post da Nuvem:
     HOST = "0.0.0.0" # Aceita Conexões de Qualquer Dispositivo na Rede.
-    PORT = 65432
+    PORT = 64352
 
     # Definindo o Socket da Nuvem:
     cloud = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Conexão TCP IPv4.
