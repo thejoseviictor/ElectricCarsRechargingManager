@@ -54,8 +54,10 @@ class ChargingPointsFile:
         if updateStatus:
             self.saveChargingPoints() # Salvando no Arquivo ".json".
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Atualizado com Sucesso!\n")
+            return updateStatus # Retornando o Status.
         else:
             print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Não Foi Encontrado!\n")
+            return updateStatus # Retornando o Status.
     
     # Gerando um ID para Novo Ponto de Carregamento:
     # Os IDs Não Podem Ser Iguais Para o Mesmo Posto de Recarga.
