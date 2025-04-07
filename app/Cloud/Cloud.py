@@ -46,17 +46,22 @@ while True:
         if data:
             print(f"\nDados Recebidos de '{addr}': {data}\n")
             # Processamento de Mensagem Recebida de Veículo:
+            # A Chave "vid" Identifica Mensagem Vinda de Veículo.
             if "vid" in data: # vid = Vehicle ID.
                 # Criando uma Nova Reserva Para o Veículo:
+                # Chaves Esperadas: "vid", "x", "y", "actualBatteryPercentage" e "batteryCapacity"
                 if "actualBatteryPercentage" in data:
                     pass # Falta Fazer Ainda.
                 # Retornando as Reservas do Veículo:
-                # Nesse Tipo de Solicitação, o Veículo Só Envia Seu ID.
+                # Chaves Esperadas: Apenas "vid"
                 else:
-                    reservations = ReservationsFile() # Lendo as Reservas no Banco de Dados no Arquivo ".json"
+                    reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
                     reservations = reservations.findReservation(data["vehicleID"]) # Procurando a Reserva do Veículo.
                     if reservations:
                         # Respondendo Com a Reserva em JSON:
+                        # Chaves Enviadas: "reservationID", "chargingStationID", 
+                        # "chargingPointID", "chargingPointPower", "kWhPrice", 
+                        # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
                         reply = json.dumps(reservations, indent=4).encode('utf-8')
                         conn.sendall(reply)
                     # Respondendo Com o Texto "None" em uma String, Se Não Houverem Reservas Para o Veículo:
