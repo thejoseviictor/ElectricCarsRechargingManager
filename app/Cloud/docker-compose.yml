@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cloud_server
+    environment:
+      - PYTHONUNBUFFERED=1 # Para Exibir os Prints no Terminal.
     ports:
       - "64352:64352"
     networks:
