@@ -7,8 +7,8 @@ from ChargingPointsFile import ChargingPointsFile
 
 class Reservation:
     # Inicializando a Classe e seus Atributos:
-    def __init__(self, reservationID, chargingStationID, chargingPointID, chargingPointPower, kWhPrice, 
-                 vehicleID, actualBatteryPercentage, batteryCapacity, lastReservationFinishDateTime):
+    def __init__(self, reservationID: int, chargingStationID: int, chargingPointID: int, chargingPointPower: float, kWhPrice: float, 
+                 vehicleID: int, actualBatteryPercentage: int, batteryCapacity: float, lastReservationFinishDateTime):
         self.reservationID = reservationID    # ID da Reserva.
         self.chargingStationID = chargingStationID  # ID do Posto de Recarga.
         self.chargingPointID = chargingPointID  # ID do Ponto de Carregamento.
@@ -28,7 +28,7 @@ class Reservation:
 
     # Calculando o Tempo para Completar a Carga de Bateria do Veículo:
     # Tempo (Horas) = ((Carga Desejada - Carga Atual) * Capacidade da Bateria (kWh)) / Potência do Carregador (kW)
-    def calculateDuration(self, actualBatteryPercentage, batteryCapacity):
+    def calculateDuration(self, actualBatteryPercentage: int, batteryCapacity: float):
         return ((100 - actualBatteryPercentage) * batteryCapacity) / (self.chargingPointPower / 1000)
 
     # Novas Reservas São Feitas para 5 Minutos Após a Última Reserva Cadastrada no Ponto de Carregamento:
@@ -59,7 +59,7 @@ class ReservationsFile:
                 self.reservationsList = json.load(file) # Salvando os Dados do Arquivo ".json" na Lista.
     
     # Procurando uma Reserva para um Veículo Específico:
-    def findReservation(self, vehicleID):
+    def findReservation(self, vehicleID: int):
         # Percorrendo a Lista de Reservas:
         for reservation in self.reservationsList:
             if reservation["vehicleID"] == vehicleID:
@@ -69,7 +69,7 @@ class ReservationsFile:
             return None
 
     # Listando Todas as Reservas Cadastradas para os Pontos de Carregamento, em um Posto de Recarga Específico:
-    def listReservations(self, chargingStationID):
+    def listReservations(self, chargingStationID: int):
         searchList = [] # Onde Serão Salvas as Reservas Encontradas.
         for reservation in self.reservationsList:
             if reservation["chargingStationID"] == chargingStationID:
@@ -84,7 +84,7 @@ class ReservationsFile:
     # NÃO FINALIZADO (Verificar Se Tem Espaço Entre Reservas)
     # Encontrando a Data de Finalização da Última Reserva Cadastrada em um Ponto de Carregamento Específico:
     # Resumindo, Descobrir Quando o Último Veículo Vai Terminar de Usar o Ponto de Carregamento.
-    def getLastReservationFinishDateTime(self, chargingPointID):
+    def getLastReservationFinishDateTime(self, chargingPointID: int):
         found = False # Indicará Se um Data Posterior For Encontrada.
         lastDateTime = datetime.datetime(1999, 12, 31, 0, 0, 0) # Data de Base para Comparação Inicial.
         # Percorrendo a Lista de Reservas:
@@ -104,7 +104,7 @@ class ReservationsFile:
     # Gerando um ID para Nova Reserva:
     # Os IDs Não Podem Ser Iguais Para o Mesmo Ponto de Carregamento.
     # IDs Novos: Maior ID + 1.
-    def generateReservationID(self, chargingPointID):
+    def generateReservationID(self, chargingPointID: int):
         startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
         for reservation in self.reservationsList:
             # Percorrendo Todas as Reservas do Ponto de Carregamento Selecionado:
@@ -115,7 +115,7 @@ class ReservationsFile:
         return startID
     
     # Criando uma Reserva e Salvando no Arquivo ".json":
-    def createReservation(self, chargingStationID, chargingPointID, vehicleID, actualBatteryPercentage, batteryCapacity):
+    def createReservation(self, chargingStationID: int, chargingPointID: int, vehicleID: int, actualBatteryPercentage: int, batteryCapacity: float):
         hasReservation = self.findReservation(vehicleID) # Verificando Se Já Existe Reserva Para Esse Veículo.
         if hasReservation:
             return hasReservation # Retornando a Reserva Já Existente.
@@ -153,7 +153,7 @@ class ReservationsFile:
             return self.findReservation(vehicleID) # Retornando a Reserva Criada.
     
     # Removendo uma Reserva de um Veículo Específico:
-    def deleteReservation(self, reservationID, vehicleID):
+    def deleteReservation(self, reservationID: int, vehicleID: int):
         newReservationsList = [] # Lista de Backup das Reservas.
         foundStatus = False # Salva o Status de Reserva Encontrada.
         for reservation in self.reservationsList:
