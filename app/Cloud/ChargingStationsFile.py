@@ -92,5 +92,7 @@ class ChargingStationsFile:
         # Exibindo as Mensagens de Status:
         if foundStatus:
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Removido com Sucesso!\n")
+            return foundStatus # Retornando o Status.
         else:
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Não Foi Encontrado!\n")
+            return foundStatus # Retornando o Status.
