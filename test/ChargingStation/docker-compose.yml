@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  charging_station:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: charging_station
+    networks:
+      - recharging_manager
+
+networks:
+  recharging_manager:
+    external: true
