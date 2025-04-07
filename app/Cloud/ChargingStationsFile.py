@@ -18,7 +18,7 @@ class ChargingStationsFile:
                 self.chargingStationsList = json.load(file) # Salvando os Dados do Arquivo ".json" na Lista.
     
     # Procurando um Posto de Recarga Específico:
-    def findChargingStation(self, chargingStationID):
+    def findChargingStation(self, chargingStationID: int):
         # Percorrendo a Lista:
         for cs in self.chargingStationsList:
             if cs["chargingStationID"] == chargingStationID:
@@ -37,7 +37,7 @@ class ChargingStationsFile:
             json.dump(self.chargingStationsList, file, indent=4)
 
     # Atualizando os Dados de um Posto de Recarga Específico:
-    def updateChargingStation(self, chargingStationID, x_position, y_position):
+    def updateChargingStation(self, chargingStationID: int, x_position: float, y_position: float):
         updateStatus = False # Vai Salvar o Status da Atualização.
         cs = self.findChargingStation(chargingStationID) # Chamando a Função de Procurar na Lista.
         if cs: # cs = Charging Station.
@@ -48,8 +48,10 @@ class ChargingStationsFile:
         if updateStatus:
             self.saveChargingStations() # Salvando no Arquivo ".json".
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Foi Atualizado com Sucesso!\n")
+            return updateStatus # Retornando o Status.
         else:
             print(f"\nPosto de Recarga com ID '{chargingStationID}' Não Foi Encontrado!\n")
+            return updateStatus # Retornando o Status.
     
     # Gerando um ID para Novo Posto de Recarga:
     # Os IDs Não Podem Ser Iguais.
@@ -63,7 +65,7 @@ class ChargingStationsFile:
         return startID
     
     # Criando um Novo Posto de Recarga e Salvando no Arquivo ".json":
-    def createChargingStation(self, x_position, y_position):
+    def createChargingStation(self, x_position: float, y_position: float):
         chargingStationID = self.generateChargingStationID()
         # Salvando na Lista:
         self.chargingStationsList.append({
@@ -75,7 +77,7 @@ class ChargingStationsFile:
         return chargingStationID # Retornando o ID do Posto de Recarga Criado.
     
     # Removendo um Posto do Arquivo ".json":
-    def deleteChargingStation(self, chargingStationID):
+    def deleteChargingStation(self, chargingStationID: int):
         newChargingStationsList = [] # Lista de Backup dos Postos.
         foundStatus = False # Salva o Status de Posto de Recarga Encontrado.
         for cs in self.chargingStationsList:
