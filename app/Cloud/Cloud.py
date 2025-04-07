@@ -39,14 +39,84 @@ def handleClient(conn, addr):
             data = receiveFullJson(conn) # Recebendo os Dados do JSON Completos.
             if data:
                 print(f"\nDados Recebidos de '{addr}': {data}\n")
-                # Processando Mensagem de Salvar Posto de Recarga no Banco de Dados, Recebida do Cliente "Posto de Recarga":
+                # Processando Mensagem para Salvar um Posto de Recarga, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "newChargingStation", "x_position" e "y_position".
                 if all(key in data for key in ["newChargingStation", "x_position", "y_position"]): # Verificando Se Todas as Chaves Estão Presentes.
                     cs = ChargingStationsFile() # Recuperando os Dados do Arquivo ".json".
-                    cs.createChargingStation(data["x_position"], data["y_position"]) # Criando Posto de Recarga no Banco de Dados.
-
-                # Processando Mensagem de Criar uma Reserva, Recebida do Cliente "Veículo":
+                    chargingStationID = cs.createChargingStation(data["x_position"], data["y_position"]) # Criando Posto de Recarga no Banco de Dados.
+                    conn.sendall(str(chargingStationID).encode('utf-8')) # Enviando o ID Cadastrado no Banco de Dados, Como Resposta.
+                # Processando Mensagem para Atualizar a Localização do Posto de Recarga, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "updateChargingStation", "chargingStationID", "x_position" e "y_position".
+                elif all(key in data for key in ["updateChargingStation", "chargingStationID", "x_position", "y_position"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cs = ChargingStationsFile() # Recuperando os Dados do Arquivo ".json".
+                    status = cs.updateChargingStation(data["chargingStationID"], data["x_position"], data["y_position"]) # Atualizando a Posição do Posto de Recarga.
+                    # Atualização Executada Com Sucesso:
+                    if status:
+                        conn.sendall(b"Sucesso")
+                    # Posto de Recarga Não Foi Encontrado no Banco de Dados:
+                    else:
+                        conn.sendall(b"None")
+                # Processando Mensagem para Remover um Posto de Recarga, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "deleteChargingStation" e "chargingStationID".
+                elif all(key in data for key in ["deleteChargingStation", "chargingStationID"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cs = ChargingStationsFile() # Recuperando os Dados do Arquivo ".json".
+                    status = cs.deleteChargingStation(data["chargingStationID"]) # Removendo o Posto de Recarga.
+                    # Removido Com Sucesso:
+                    if status:
+                        conn.sendall(b"Sucesso")
+                    # Posto de Recarga Não Foi Encontrado no Banco de Dados:
+                    else:
+                        conn.sendall(b"None")
+                # Processando Mensagem para Cadastrar um Ponto de Carregamento, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "newChargingPoint", "chargingStationID", "power", "kWhPrice" e "availability" (Com Valores: "livre", "ocupado" ou "reservado").
+                elif all(key in data for key in ["newChargingPoint", "chargingStationID", "power", "kWhPrice", "availability"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cp = ChargingPointsFile() # Recuperando os Dados do Arquivo ".json".
+                    chargingPointID = cp.createChargingPoint(data["chargingStationID"], data["power"], data["kWhPrice"], data["availability"]) # Criando Ponto de Carregamento no Banco de Dados.
+                    conn.sendall(str(chargingPointID).encode('utf-8')) # Enviando o ID Cadastrado no Banco de Dados, Como Resposta.
+                # Processando Mensagem para Atualizar um Ponto de Carregamento, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "updateChargingPoint", "chargingPointID", "chargingStationID", "power", "kWhPrice" e "availability".
+                elif all(key in data for key in ["updateChargingPoint", "chargingPointID", "chargingStationID", "power", "kWhPrice", "availability"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cp = ChargingPointsFile() # Recuperando os Dados do Arquivo ".json".
+                    status = cp.updateChargingPoint(data["chargingPointID"], data["chargingStationID"], data["power"], data["kWhPrice"], data["availability"]) # Atualizando os Dados do Ponto de Carregamento.
+                    # Atualização Executada Com Sucesso:
+                    if status:
+                        conn.sendall(b"Sucesso")
+                    # Ponto de Carregamento Não Foi Encontrado no Banco de Dados:
+                    else:
+                        conn.sendall(b"None")
+                # Processando Mensagem para Remover um Ponto de Carregamento, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "deleteChargingPoint", "chargingPointID" e "chargingStationID".
+                elif all(key in data for key in ["deleteChargingPoint", "chargingPointID", "chargingStationID"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cp = ChargingPointsFile() # Recuperando os Dados do Arquivo ".json".
+                    status = cp.deleteChargingPoint(data["chargingPointID"], data["chargingStationID"]) # Removendo o Ponto de Carregamento.
+                    # Removido Com Sucesso:
+                    if status:
+                        conn.sendall(b"Sucesso")
+                    # Ponto de Carregamento Não Foi Encontrado no Banco de Dados:
+                    else:
+                        conn.sendall(b"None")
+                # Processando Mensagem para Retornar Todos Pontos de Carregamento de um Posto de Recarga, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "receiveAllChargingPoints" e "chargingStationID".
+                elif all(key in data for key in ["receiveAllChargingPoints", "chargingStationID"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    cp = ChargingPointsFile() # Recuperando os Dados do Arquivo ".json".
+                    chargingPointsList = cp.listChargingPoints(data["chargingStationID"]) # Listando Todos os Pontos de Carregamento do Posto no Banco de Dados.
+                    # Respondendo Com os Pontos de Carregamento em JSON:
+                    # Chaves Enviadas: "chargingPointID", "chargingStationID", "power", "kWhPrice" e "availability".
+                    reply = json.dumps(chargingPointsList, indent=4).encode('utf-8')
+                    conn.sendall(reply)
+                # Processando Mensagem para Receber Todas as Reservas do Posto de Recarga, Recebida do Cliente "Posto de Recarga":
+                # Chaves Esperadas: "receiveAllReservations" e "chargingStationID".
+                elif all(key in data for key in ["receiveAllReservations", "chargingStationID"]): # Verificando Se Todas as Chaves Estão Presentes.
+                    reservationsList = ReservationsFile() # Recuperando os Dados do Arquivo ".json".
+                    reservations = reservationsList.listReservations(data["chargingStationID"]) # Listando Todos as Reservas Para o Posto de Recarga no Banco de Dados.
+                    # Respondendo Com as Reservas em JSON:
+                    # Chaves Enviadas: "reservationID", "chargingStationID", "chargingPointID", "chargingPointPower", "kWhPrice", 
+                    # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
+                    reply = json.dumps(reservations, indent=4).encode('utf-8')
+                    conn.sendall(reply)
+                # Processando Mensagem para Criar uma Reserva, Recebida do Cliente "Veículo":
                 # Chaves Esperadas: "vid", "x", "y", "actualBatteryPercentage", "batteryCapacity" e "scheduleReservation".
-                if all(key in data for key in ["vid", "x", "y", "actualBatteryPercentage", "batteryCapacity", "scheduleReservation"]): # vid = Vehicle ID.
+                elif all(key in data for key in ["vid", "x", "y", "actualBatteryPercentage", "batteryCapacity", "scheduleReservation"]): # vid = Vehicle ID.
                     # Calculando o Posto de Recarga Mais Próximo:
                     # Equação de Distância Entre Dois Pontos em um Plano Cartesiano:
                     # distância = sqrt((xP - xV​)² + (yP - yV​)²), Onde "xV" e "yV" São Coordenadas do Veículo e "xP" e "yP" São Coordenadas do Posto.
@@ -62,28 +132,34 @@ def handleClient(conn, addr):
                             chargingStationID = station["chargingStationID"] # Salvando o ID do Posto de Recarga Encontrado.
 
                     # AINDA FALTA FAZER:
-                    # Calcular o Ponto de Carregamento Com Reserva Mais Cedo:
-                    """ reservationList = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
-                    reservationList = reservationList.listReservations(chargingStationID) # Lendo Reservas do Posto de Recarga Escolhido.
-                    latestDateTime = datetime.datetime(2100, 12, 31, 0, 0, 0) # Data Base Mais Recente para Comparação.
-                    found = False # Indicará Se um Data Anterior For Encontrada.
-                    for reservation in reservationList:
-                        dateTimeInFile = datetime.datetime.fromisoformat(reservation["finishDateTime"]) # Decodificando a Data na Lista para DateTime.
-                        if dateTimeInFile < latestDateTime:
-                            found = True # Alterando o Status de Data Posterior Encontrada.
-                            latestDateTime = dateTimeInFile
-                    chargingPointID = """
+                    # Calcular o Ponto de Carregamento Sem Reservas ou Com Reserva Que Acaba Mais Cedo:
+                    chargingPointsList = ChargingPointsFile() # Lendo Dados do Arquivo ".json".
+                    cp = chargingPointsList.listChargingPoints(chargingStationID) # Listando Todos os Pontos de Carregamento do Posto de Recarga.
+                    reservationsList = ReservationsFile() # Lendo Dados do Arquivo ".json".
+                    reservations = reservationsList.listReservations(chargingStationID) # Listando Todos as Reservas Para o Posto de Recarga.
+                    # Percorrendo a Lista de Pontos de Carregamento e Reservas para Encontrar um Ponto de Carregamento Sem Reserva:
+                    for point in cp:
+                        found = False # Vai Indicar Se Foi Encontrada Alguma Reserva Para o Ponto de Carregamento.
+                        for rs in reservations:
+                            # Se Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Encerre o Loop de Reservas e Pule Para o Próximo Ponto:
+                            if point["chargingPointID"] == rs["chargingPointID"]:
+                                found = True
+                                break
+                        # Se Não Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Ele Será o Selecionado Para uma Nova Reserva:
+                        if not found:
+                            chargingPointID = point["chargingPointID"]
+                    # Encontrando o Ponto de Carregamento Que Vai Ficar Livre Mais Cedo:
+                        
 
-
-                    reservation = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
-                    reservation.createReservation(chargingStationID, chargingPointID, data["vid"], data["actualBatteryPercentage"], data["batteryCapacity"])
+                    # Criando a Reserva:
+                    createdReservation = reservationsList.createReservation(chargingStationID, chargingPointID, data["vid"], data["actualBatteryPercentage"], data["batteryCapacity"])
                     # Respondendo Com a Reserva em JSON:
                     # Chaves Enviadas: "reservationID", "chargingStationID", 
                     # "chargingPointID", "chargingPointPower", "kWhPrice", 
                     # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
-                    reply = json.dumps(reservation, indent=4).encode('utf-8')
+                    reply = json.dumps(createdReservation, indent=4).encode('utf-8')
                     conn.sendall(reply)
-                # Processando Mensagem de Procurar uma Reserva, Recebida do Cliente "Veículo":
+                # Processando Mensagem para Procurar uma Reserva, Recebida do Cliente "Veículo":
                 # Chaves Esperadas: "vid" e "findReservation"
                 elif all(key in data for key in ["vid", "findReservation"]): # vid = Vehicle ID.
                     reservationsFile = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
@@ -98,7 +174,7 @@ def handleClient(conn, addr):
                     # Respondendo Com o Texto "None" em uma String, Se Não Houverem Reservas Para o Veículo:
                     else:
                         conn.sendall(b"None")
-                # Processando Mensagem de Excluir uma Reserva, Recebida do Cliente "Veículo":
+                # Processando Mensagem para Excluir uma Reserva, Recebida do Cliente "Veículo":
                 # Chaves Esperadas: "reservationID", "vehicleID" e "deleteReservation".
                 elif all(key in data for key in ["reservationID", "vehicleID", "deleteReservation"]): # Verificando Se Todas as Chaves Estão Presentes.
                     reservationsFile = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
