@@ -15,9 +15,9 @@ class Reservation:
         self.chargingPointPower = chargingPointPower # Potência do Ponto de Carregamento em Watt.
         self.kWhPrice = kWhPrice    # Preço do kWh do Ponto de Carregamento.
         self.vehicleID = vehicleID  # ID do Veículo.
+        self.duration = self.calculeDuration(actualBatteryPercentage, batteryCapacity) # Duração da Recarga em Horas.
         self.startDateTime = self.calculateStartDateTime(lastReservationFinishDateTime) # Formato ISO: 0000-00-00T00:00:00 (Ano, Mês, Dia, T(Separador Entre Data e Hora), Hora, Minutos, Segundos)
         self.finishDateTime = self.calculateFinishDateTime() # Formato ISO: 0000-00-00T00:00:00 (Ano, Mês, Dia, T(Separador Entre Data e Hora), Hora, Minutos, Segundos)
-        self.duration = self.calculeDuration(actualBatteryPercentage, batteryCapacity) # Duração da Recarga em Horas.
         self.price = self.calculatePrice()  # Preço da Recarga.
 
     # Calculando o Preço da Recarga:
