@@ -78,7 +78,6 @@ while True:
                     # Reserva Não Encontrada:
                     else:
                         conn.sendall(b"None")
-
         # Finalizando, Se Não Houverem Dados:
         else:
             break
