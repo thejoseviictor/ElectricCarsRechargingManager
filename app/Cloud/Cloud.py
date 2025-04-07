@@ -121,44 +121,74 @@ def handleClient(conn, addr):
                     # Equação de Distância Entre Dois Pontos em um Plano Cartesiano:
                     # distância = sqrt((xP - xV​)² + (yP - yV​)²), Onde "xV" e "yV" São Coordenadas do Veículo e "xP" e "yP" São Coordenadas do Posto.
                     cs = ChargingStationsFile()
-                    # Iniciando as Variáveis de Distância e ID do Posto de Recarga Encontrado:
-                    shorterDistance = None
-                    chargingStationID = None
-                    # Comparando a Distância Entre os Posto de Recarga, Para Achar o Mais Próximo:
-                    for station in cs.chargingStationsList:
-                        distanceFromVehicle = math.sqrt((station["x_position"] - data["x"])**2 + (station["y_position"] - data["y"])**2)
-                        if shorterDistance is None or distanceFromVehicle < shorterDistance:
-                            shorterDistance = distanceFromVehicle # Atualizando a Distância do Mais Próximo.
-                            chargingStationID = station["chargingStationID"] # Salvando o ID do Posto de Recarga Encontrado.
-
-                    # AINDA FALTA FAZER:
-                    # Calcular o Ponto de Carregamento Sem Reservas ou Com Reserva Que Acaba Mais Cedo:
-                    chargingPointsList = ChargingPointsFile() # Lendo Dados do Arquivo ".json".
-                    cp = chargingPointsList.listChargingPoints(chargingStationID) # Listando Todos os Pontos de Carregamento do Posto de Recarga.
-                    reservationsList = ReservationsFile() # Lendo Dados do Arquivo ".json".
-                    reservations = reservationsList.listReservations(chargingStationID) # Listando Todos as Reservas Para o Posto de Recarga.
-                    # Percorrendo a Lista de Pontos de Carregamento e Reservas para Encontrar um Ponto de Carregamento Sem Reserva:
-                    for point in cp:
-                        found = False # Vai Indicar Se Foi Encontrada Alguma Reserva Para o Ponto de Carregamento.
-                        for rs in reservations:
-                            # Se Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Encerre o Loop de Reservas e Pule Para o Próximo Ponto:
-                            if point["chargingPointID"] == rs["chargingPointID"]:
-                                found = True
-                                break
-                        # Se Não Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Ele Será o Selecionado Para uma Nova Reserva:
-                        if not found:
-                            chargingPointID = point["chargingPointID"]
-                    # Encontrando o Ponto de Carregamento Que Vai Ficar Livre Mais Cedo:
-                        
-
-                    # Criando a Reserva:
-                    createdReservation = reservationsList.createReservation(chargingStationID, chargingPointID, data["vid"], data["actualBatteryPercentage"], data["batteryCapacity"])
-                    # Respondendo Com a Reserva em JSON:
-                    # Chaves Enviadas: "reservationID", "chargingStationID", 
-                    # "chargingPointID", "chargingPointPower", "kWhPrice", 
-                    # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
-                    reply = json.dumps(createdReservation, indent=4).encode('utf-8')
-                    conn.sendall(reply)
+                    # Executando as Operações, Se Houverem Postos de Recarga Cadastrados no Banco de Dados:
+                    if cs.chargingStationsList:
+                        # Iniciando as Variáveis de Distância e ID do Posto de Recarga Encontrado:
+                        shorterDistance = None
+                        chargingStationID = None
+                        # Comparando a Distância Entre os Posto de Recarga, Para Achar o Mais Próximo:
+                        for station in cs.chargingStationsList:
+                            distanceFromVehicle = math.sqrt((station["x_position"] - data["x"])**2 + (station["y_position"] - data["y"])**2)
+                            if shorterDistance is None or distanceFromVehicle < shorterDistance:
+                                shorterDistance = distanceFromVehicle # Atualizando a Distância do Mais Próximo.
+                                chargingStationID = station["chargingStationID"] # Salvando o ID do Posto de Recarga Encontrado.
+                        # Calcular o Ponto de Carregamento Sem Reservas ou Com Reserva Que Acaba Mais Cedo:
+                        chargingPointsList = ChargingPointsFile() # Lendo Dados do Arquivo ".json".
+                        cp = chargingPointsList.listChargingPoints(chargingStationID) # Listando Todos os Pontos de Carregamento do Posto de Recarga.
+                        reservationsList = ReservationsFile() # Lendo Dados do Arquivo ".json".
+                        reservations = reservationsList.listReservations(chargingStationID) # Listando Todos as Reservas Para o Posto de Recarga.
+                        chargingPointID = None # Inicializando o ID do Ponto de Carregamento a Ser Escolhido.
+                        # Verificando Se Existem Pontos de Carregamento Para o Posto de Recarga, Cadastrados no Banco de Dados:
+                        if cp:
+                            # Escolhendo o Ponto de Carregamento, Se Houverem Reservas Cadastradas no Banco de Dados:
+                            if reservations:
+                                # Percorrendo a Lista de Pontos de Carregamento e Reservas para Encontrar um Ponto de Carregamento Sem Reserva:
+                                for point in cp:
+                                    found = False # Vai Indicar Se Foi Encontrada Alguma Reserva Para o Ponto de Carregamento.
+                                    for rs in reservations:
+                                        # Se Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Encerre o Loop de Reservas e Pule Para o Próximo Ponto:
+                                        if point["chargingPointID"] == rs["chargingPointID"]:
+                                            found = True
+                                            break
+                                    # Se Não Achar Pelo Menos uma Reserva Para o Ponto de Carregamento, Ele Será o Selecionado Para uma Nova Reserva:
+                                    if not found:
+                                        chargingPointID = point["chargingPointID"]
+                                        break
+                                # Encontrando o Ponto de Carregamento Que Vai Ficar Livre Mais Cedo, Se um Ponto Vazio Não Foi Encontrado Anteriormente:
+                                if not chargingPointID:
+                                    latestFinishingReservation = None # Vai Salvar a Célula com os Dados da Reserva Que Vai Acabar Mais Cedo.
+                                    latestDate = None # Usado Para Comparar Com as Datas de Finalização das Reservas.
+                                    # Percorrendo a Lista de Reservas:
+                                    for rs in reservations:
+                                        endTime = datetime.datetime.fromisoformat(rs["finishDateTime"]) # Salvando a Data de Finalização em Formato DateTime.
+                                        if latestDate is None or endTime < latestDate: # Comparando a Data de Finalização da Reserva Atual Com a Mais Recente Até o Momento.
+                                            latestDate = endTime # Salvando a Data, Se For Mais Recente.
+                                            latestFinishingReservation = rs # Salvando a Célula da Reserva.
+                                    chargingPointID = latestFinishingReservation["chargingPointID"] # Copiando o ID do Ponto de Carregamento da Reserva Que Vai Acabar Mais Cedo.
+                                # Criando a Reserva:
+                                createdReservation = reservationsList.createReservation(chargingStationID, chargingPointID, data["vid"], data["actualBatteryPercentage"], data["batteryCapacity"])
+                                # Respondendo Com a Reserva em JSON:
+                                # Chaves Enviadas: "reservationID", "chargingStationID", 
+                                # "chargingPointID", "chargingPointPower", "kWhPrice", 
+                                # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
+                                reply = json.dumps(createdReservation, indent=4).encode('utf-8')
+                                conn.sendall(reply)
+                            # Reservando no Primeiro Ponto de Carregamento, Se Não Houverem Reservas Cadastradas no Banco de Dados:
+                            else:
+                                chargingPointID = cp[0]["chargingPointID"]
+                                createdReservation = reservationsList.createReservation(chargingStationID, chargingPointID, data["vid"], data["actualBatteryPercentage"], data["batteryCapacity"])
+                                # Respondendo Com a Reserva em JSON:
+                                # Chaves Enviadas: "reservationID", "chargingStationID", 
+                                # "chargingPointID", "chargingPointPower", "kWhPrice", 
+                                # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
+                                reply = json.dumps(createdReservation, indent=4).encode('utf-8')
+                                conn.sendall(reply)
+                        # Respondendo Com o Texto "None" em uma String, Se Não Houverem Pontos de Carregamento:
+                        else:
+                            conn.sendall(b"None")
+                    # Respondendo Com o Texto "None" em uma String, Se Não Houverem Postos de Recarga no Banco de Dados:
+                    else:
+                        conn.sendall(b"None")
                 # Processando Mensagem para Procurar uma Reserva, Recebida do Cliente "Veículo":
                 # Chaves Esperadas: "vid" e "findReservation"
                 elif all(key in data for key in ["vid", "findReservation"]): # vid = Vehicle ID.
