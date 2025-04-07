@@ -18,7 +18,7 @@ class ChargingPointsFile:
                 self.chargingPointsList = json.load(file) # Salvando os Dados do Arquivo ".json" na Lista.
     
     # Procurando um Ponto de Carregamento de um Posto Específico:
-    def findChargingPoint(self, chargingPointID, chargingStationID):
+    def findChargingPoint(self, chargingPointID: int, chargingStationID: int):
         # Percorrendo a Lista:
         for cp in self.chargingPointsList: # cp = Charging Point - Ponto de Carregamento.
             if cp["chargingPointID"] == chargingPointID:
@@ -29,7 +29,7 @@ class ChargingPointsFile:
             return None
 
     # Listando os Pontos de Carregamento de um Posto, Cadastrados no Arquivo ".json":
-    def listChargingPoints(self, chargingStationID):
+    def listChargingPoints(self, chargingStationID: int):
         searchList = [] # Onde Serão Salvos os Pontos de um Posto Específico.
         for cp in self.chargingPointsList: # cp = Charging Point - Ponto de Carregamento.
             if cp["chargingStationID"] == chargingStationID:
@@ -42,7 +42,7 @@ class ChargingPointsFile:
             json.dump(self.chargingPointsList, file, indent=4)
 
     # Atualizando os Dados de um Ponto de Carregamento de um Posto Específico:
-    def updateChargingPoint(self, chargingPointID, chargingStationID, power, kWhPrice, availability):
+    def updateChargingPoint(self, chargingPointID: int, chargingStationID: int, power: float, kWhPrice: float, availability: str):
         updateStatus = False # Vai Salvar o Status da Atualização.
         cp = self.findChargingPoint(chargingPointID, chargingStationID) # Percorrendo a Lista de Pontos de Carregamento.
         if cp:
@@ -60,7 +60,7 @@ class ChargingPointsFile:
     # Gerando um ID para Novo Ponto de Carregamento:
     # Os IDs Não Podem Ser Iguais Para o Mesmo Posto de Recarga.
     # IDs Novos: Maior ID + 1.
-    def generateChargingPointID(self, chargingStationID):
+    def generateChargingPointID(self, chargingStationID: int):
         startID = 1 # Um ID Inicial Que Será Usado Como Comparador.
         for cp in self.chargingPointsList:
             # Percorrendo Todos os Pontos de Carregamento do Mesmo Posto de Recarga Selecionado:
@@ -71,7 +71,7 @@ class ChargingPointsFile:
         return startID
     
     # Criando um Novo Ponto de Carregamento e Salvando no Arquivo ".json":
-    def createChargingPoint(self, chargingStationID, power, kWhPrice, availabilty):
+    def createChargingPoint(self, chargingStationID: int, power: float, kWhPrice: float, availabilty: str):
         # Gerando o ID do Ponto de Carregamento:
         chargingPointID = self.generateChargingPointID(chargingStationID)
         # Salvando na Lista:
@@ -87,7 +87,7 @@ class ChargingPointsFile:
         return chargingPointID # Retornando o ID do Ponto de Carregamento Criado.
     
     # Removendo um Ponto de Carregamento do Arquivo ".json":
-    def deleteChargingPoint(self, chargingPointID, chargingStationID):
+    def deleteChargingPoint(self, chargingPointID: int, chargingStationID: int):
         newChargingPointsList = [] # Lista de Backup dos Pontos de Carregamento.
         foundStatus = False # Salva o Status de Ponto de Carregamento Encontrado.
         for cp in self.chargingPointsList:
