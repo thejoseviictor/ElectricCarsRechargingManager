@@ -36,39 +36,42 @@ def handleClient(conn, addr):
             data = receiveFullJson(conn) # Recebendo os Dados do JSON Completos.
             if data:
                 print(f"\nDados Recebidos de '{addr}': {data}\n")
-                # Processamento de Mensagem Recebida de Veículo:
-                # A Chave "vid" Identifica Mensagem Vinda de Veículo.
-                if "vid" in data: # vid = Vehicle ID.
-                    # Criando uma Nova Reserva Para o Veículo:
-                    # Chaves Esperadas: "vid", "x", "y", "actualBatteryPercentage" e "batteryCapacity"
-                    if "actualBatteryPercentage" in data:
-                        pass # Falta Fazer Ainda.
-                    # Retornando as Reservas do Veículo:
-                    # Chaves Esperadas: Apenas "vid"
+                # Processamento de Mensagem Recebida do Cliente Posto de Recarga:
+                # CÓDIGO AQUI
+
+                # Processando Mensagem de Criar uma Reserva, Recebida do Cliente Veículo:
+                # Chaves Esperadas: "vid", "x", "y", "actualBatteryPercentage", "batteryCapacity" e "scheduleReservation".
+                if "vid" and "x" and "y" and "actualBatteryPercentage" and "batteryCapacity" and "scheduleReservation" in data: # vid = Vehicle ID.
+                    pass # Falta Fazer Ainda.
+                # Processando Mensagem de Procurar uma Reserva, Recebida do Cliente Veículo:
+                # Chaves Esperadas: "vid" e "findReservation"
+                elif "vid" and "findReservation" in data: # vid = Vehicle ID.
+                    reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
+                    reservations = reservations.findReservation(data["vehicleID"]) # Procurando a Reserva do Veículo.
+                    if reservations:
+                        # Respondendo Com a Reserva em JSON:
+                        # Chaves Enviadas: "reservationID", "chargingStationID", 
+                        # "chargingPointID", "chargingPointPower", "kWhPrice", 
+                        # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
+                        reply = json.dumps(reservations, indent=4).encode('utf-8')
+                        conn.sendall(reply)
+                    # Respondendo Com o Texto "None" em uma String, Se Não Houverem Reservas Para o Veículo:
                     else:
-                        reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
-                        reservations = reservations.findReservation(data["vehicleID"]) # Procurando a Reserva do Veículo.
-                        if reservations:
-                            # Respondendo Com a Reserva em JSON:
-                            # Chaves Enviadas: "reservationID", "chargingStationID", 
-                            # "chargingPointID", "chargingPointPower", "kWhPrice", 
-                            # "vehicleID", "startDateTime", "finishDateTime", "duration" e "price"
-                            reply = json.dumps(reservations, indent=4).encode('utf-8')
-                            conn.sendall(reply)
-                        # Respondendo Com o Texto "None" em uma String, Se Não Houverem Reservas Para o Veículo:
-                        else:
-                            conn.sendall(b"None")
-                    # Excluindo a Reserva do Veículo:
-                    # Chaves Esperadas: "reservationID", "vehicleID" e "deleteReservation".
-                    if "deleteReservation" in data:
-                        reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
-                        reservations = reservations.deleteReservation(data["reservationID"], data["vehicleID"]) # Excluindo a Reserva.
-                        # Reserva Excluida Com Sucesso:
-                        if reservations:
-                            conn.sendall(b"Sucesso")
-                        # Reserva Não Encontrada:
-                        else:
-                            conn.sendall(b"None")
+                        conn.sendall(b"None")
+                # Processando Mensagem de Excluir uma Reserva, Recebida do Cliente Veículo:
+                # Chaves Esperadas: "reservationID", "vehicleID" e "deleteReservation".
+                elif "reservationID" and "vehicleID" and "deleteReservation" in data:
+                    reservations = ReservationsFile() # Lendo as Reservas do Banco de Dados no Arquivo ".json"
+                    reservations = reservations.deleteReservation(data["reservationID"], data["vehicleID"]) # Excluindo a Reserva.
+                    # Reserva Excluida Com Sucesso:
+                    if reservations:
+                        conn.sendall(b"Sucesso")
+                    # Reserva Não Encontrada:
+                    else:
+                        conn.sendall(b"None")
+                # Retornando a String "None" Se o Cliente Não Pediu Nada ou Faltaram Chaves no JSON:
+                else:
+                    conn.sendall(b"None")
             # Finalizando o Loop, Se Não Houverem Dados:
             else:
                 break
