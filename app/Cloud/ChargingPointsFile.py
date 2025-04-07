@@ -42,12 +42,13 @@ class ChargingPointsFile:
             json.dump(self.chargingPointsList, file, indent=4)
 
     # Atualizando os Dados de um Ponto de Carregamento de um Posto Específico:
-    def updateChargingPoint(self, chargingPointID, chargingStationID, power, kWhPrice):
+    def updateChargingPoint(self, chargingPointID, chargingStationID, power, kWhPrice, availability):
         updateStatus = False # Vai Salvar o Status da Atualização.
         cp = self.findChargingPoint(chargingPointID, chargingStationID) # Percorrendo a Lista de Pontos de Carregamento.
         if cp:
-            cp["power"] = power
+            cp["power"] = power # Potência do Carregador em Watt.
             cp["kWhPrice"] = kWhPrice
+            cp["availability"] = availability # "livre", "ocupado" ou "reservado".
             updateStatus = True
         # Exibindo as Mensagens de Status:
         if updateStatus:
@@ -70,15 +71,17 @@ class ChargingPointsFile:
         return startID
     
     # Criando um Novo Ponto de Carregamento e Salvando no Arquivo ".json":
-    def createChargingPoint(self, chargingStationID, power, kWhPrice):
+    def createChargingPoint(self, chargingStationID, power, kWhPrice, availabilty):
         # Gerando o ID do Ponto de Carregamento:
         chargingPointID = self.generateChargingPointID(chargingStationID)
         # Salvando na Lista:
         self.chargingPointsList.append({
             "chargingPointID": chargingPointID, 
             "chargingStationID": chargingStationID, 
-            "power": power, 
-            "kWhPrice": kWhPrice})
+            "power": power, # Potência do Carregador em Watt.
+            "kWhPrice": kWhPrice,
+            "availability": availabilty # "livre", "ocupado" ou "reservado".
+            })
         self.saveChargingPoints() # Salvando no Arquivo ".json".
         print(f"\nPonto de Carregamento com ID '{chargingPointID}', no Posto de Recarga '{chargingStationID}', Foi Salvo com Sucesso!\n")
     
