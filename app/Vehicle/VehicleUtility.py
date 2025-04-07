@@ -25,13 +25,17 @@ class VehicleUtility:
     # Método que realiza a simulação de consumo de bateria
     def simulation(self, vehicle : Vehicle):
         
+        host = os.environ.get("HOST")
+        port = int ( os.environ.get("PORT") )
+
         situation = True
 
         while(situation):
             
             if vehicle.currentEnergy <= vehicle.criticalEnergy:
                 
-                request = VehicleClient("0.0.0.0", 600000)
+                self.defineCoordinates(vehicle)
+                request = VehicleClient(host, port)
                 request.sendRequest(vehicle)
                 situation = False
 

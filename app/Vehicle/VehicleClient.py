@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from app.Vehicle import Vehicle
 
+import os
 import socket
 import json
 
@@ -10,7 +11,7 @@ import json
 class VehicleClient:
 
     server_host: str
-    server_host: int
+    server_port: int
 
     def __init__(self, server_host: str, server_port: int):
         
@@ -36,7 +37,8 @@ class VehicleClient:
             "x": vehicle.coordinates(0) ,
             "y": vehicle.coordinates(1) ,
             "actualBatteryPercentage": vehicle.currentEnergy ,
-            "batteryCapacity" : vehicle.maximumBattery
+            "batteryCapacity" : vehicle.maximumBattery ,
+            "scheduleReservation" : True
         }
 
         # Cria um json baseado no dicionário "vData" e envia as informações para o servidor (Nuvem).
@@ -57,7 +59,8 @@ class VehicleClient:
 
         # Dicionário utilizado para selecionar os dados pertinentes para a nuvem ao pedir uma reserva
         vData = {
-            "vid": vehicle.vid
+            "vid": vehicle.vid ,
+            "findReservation": True
         }
 
         # Cria um json baseado no dicionário "vData" e envia as informações para o servidor (Nuvem).

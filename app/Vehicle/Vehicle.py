@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.Vehicle.User import User
+from User import User
 
 @dataclass
 class Vehicle:
@@ -32,7 +32,6 @@ class Vehicle:
         self.diastanceFromChargingStation = distanceFromChargingStation
 
     '''
-
     def definePosition(self,x: int, y: int): # Método que define o localização do veículo
         self.coordinates.append(x)
         self.coordinates.append(y)

@@ -12,8 +12,8 @@ COPY . .
 # Instala dependências (se houver um requirements.txt)
 # RUN pip install --no-cache-dir -r requirements.txt
 
-# Define a porta que o containr deve expor
-# EXPOSE 8000
+# Define a porta que o container deve expor
+# EXPOSE 64352
 
 # Define os comandos e parâmetros
 CMD ["python", "app/main.py"]
