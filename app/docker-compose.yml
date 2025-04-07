@@ -4,10 +4,6 @@ networks:
   vehicle-network:
     driver: bridge # Network do tipo bridge: Cria uma rede isolada em cada host, onde os contêineres podem se comunicar entre si. Todos os contêineres na mesma rede bridge podem se comunicar uns com os outros.
 
-
-#volumes:
-#  vehicle-vol: #Utilizado para prsistência de dados mesmo após a aplicação ser encerrada.
-
 services:
   vehicle:
     
