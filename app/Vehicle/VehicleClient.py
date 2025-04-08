@@ -19,8 +19,8 @@ class VehicleClient:
     server_host: str
     server_port: int
 
-    server_host = str(date["host"])
-    server_port = int(date["port"])
+    server_host = os.getenv("SERVER_HOST", "cloud") #str(date["host"])
+    server_port = int(os.getenv("SERVER_PORT", 64352)) #int(date["port"])
 
     def sendRequest(self, vehicle: Vehicle): # Envia uma requisição e dados do client (Veículo) para o servidor (Nuvem).
         

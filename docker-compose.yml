@@ -18,11 +18,12 @@ services:
       - SERVER_HOST=cloud
       - SERVER_PORT=64352
     
+    
     stdin_open: true # Corresponde ao -i = modo interativo
     tty: true # Corrspond ao -t = terminal virtual
 
-    depends_on: # Depende do host "cloud"
-      - cloud
+    # depends_on: # Depende do host "cloud"
+    #  - cloud
 
     networks: # Definindo a network que será usada
       - recharging_manager
