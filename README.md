@@ -13,9 +13,9 @@ A imagem do servidor pode ser executada através do docker-compose, acessando o 
 ## Estrutura dos Arquivos da Nuvem:
 ### 1. Cloud.py:
 Este é o servidor principal do sistema. Ele é responsável por iniciar o socket da Nuvem, ativar o modo de escuta do socket, criar threads para novas solicitações dos clientes, fazer a manipulação de dados necessárias no banco de dados, responder aos clientes e finalizar a conexão com os clientes.
-O servidor escuta qualquer dispositivo conectado na mesma rede local, que se comunica com a porta "64352".
-Ao receber uma requisição, interpreta o conteúdo em JSON, analisa qual ação é necessária, através de uma chave/campo de ação para cada solicitação do cliente, e executa a ação correspondente.
-Campos/Chaves no JSON enviado pelo Cliente e suas ações no servidor:
+<br>O servidor escuta qualquer dispositivo conectado na mesma rede local, que se comunica com a porta "64352".
+<br>Ao receber uma requisição, interpreta o conteúdo em JSON, analisa qual ação é necessária, através de uma chave/campo de ação para cada solicitação do cliente, e executa a ação correspondente.
+<br>Campos/Chaves no JSON enviado pelo Cliente e suas ações no servidor:
 •	newChargingStation: 
 o	o cliente do posto de recarga solicita a criação e salvamento de suas informações no banco de dados do servidor.
 o	o servidor responde com o ID cadastrado para o posto de recarga no banco de dados.
@@ -56,7 +56,6 @@ Além disso, caso ocorra um dos seguintes erros na solicitação, o servidor ir�
 •	Ponto de carregamento não encontrado, para atualização ou exclusão;
 •	Não existem reservas cadastradas para o posto de recarga ou veículo;
 •	A reserva não foi encontrada, para exclusão.
-<br>
 
 ### 2. ChargingStationsFile.py:
 Este arquivo contém a classe "ChargingStationsFile", responsável por armazenar, manipular e recuperar os dados dos postos de recarga, a partir do arquivo "charging_stations.json". Os postos de recargas são identificados por um "chargingStationID" único, e cada um deve conter uma localização única nas coordenadas "x" e "y" do plano cartesiano.
