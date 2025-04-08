@@ -23,38 +23,46 @@ class VehicleUtility:
         vehicle.definePosition(x,y)
 
     # Método que realiza a simulação de consumo de bateria
-    def simulation(self, vehicle : Vehicle, host: str, port: int):
+    def simulation(self, vehicle : Vehicle):
+        realized = False
         situation = True
 
         while(situation):
             
-            if vehicle.currentEnergy <= vehicle.criticalEnergy:
-                
-                self.defineCoordinates(vehicle)
+            if vehicle.currentEnergy <= vehicle.criticalEnergy: # Quando a bateria chega ao nível crítico:
 
-                request = VehicleClient(server_host= host, server_port= port)
-                request.sendRequest(vehicle)
+                # Pergunta se o proprietario deseja ou não fazer uma reserva
+                reply = input(f" Bateria em ponto crítico: {vehicle.currentEnergy}% \n \n Deseja fazer uma reserva? \n \n 1.Sim \n 2.Não \n \n -> ")
                 
-                situation = False
+                if reply == "1":
+                    self.defineCoordinates(vehicle)
 
-            else:
+                    request = VehicleClient()
+                    request.sendRequest(vehicle)
+                    
+                    situation = False
+
+                    realized = True
+                
+                else:
+                    self.clearTerminal()
+                    situation = False
+
+            elif vehicle.currentEnergy >= vehicle.criticalEnergy :
                 decrement = random.randint(0,20) # Variavel utilizada para decremento aleatório da bateria, para simulação 
                 vehicle.currentEnergy -= decrement
                 
                 print(f"\n Bateria: {vehicle.currentEnergy}") # Mostra a bateria na tela constantemente
                 time.sleep(2)
                 self.clearTerminal()
+        
+        return realized
     '''
     Nesse método há a simulação de viagem de um veículo:
     A cada 2 segundos, o veículo perde uma % aleatoria da bateria.
     2 segundos = 1 hora no mundo real
     Ao chegar na energia critica, ele inicia o processo de requisição de reserva, para a nuvem, para realizar a recarga em um posto.
     '''
-
-    def showReservations(self, vehicle : Vehicle , host:str, port: int):
-
-        request = VehicleClient(host,port)
-        request.requestReservation(vehicle)
 
     @staticmethod
     def clearTerminal():

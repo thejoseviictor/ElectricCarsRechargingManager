@@ -10,8 +10,17 @@ import json
 @dataclass
 class VehicleClient:
 
+    path = os.path.join(os.path.dirname(__file__), "date.json") # Define o caminho do arquivo "date.json"
+
+    with open(path, "r") as file: 
+        date = json.load(file) # Importa o arquivo json com os dados de usuário, veículo e comunicação com o servidor
+
+
     server_host: str
     server_port: int
+
+    server_host = str(date["host"])
+    server_port = int(date["port"])
 
     def sendRequest(self, vehicle: Vehicle): # Envia uma requisição e dados do client (Veículo) para o servidor (Nuvem).
         
@@ -38,32 +47,45 @@ class VehicleClient:
         vehicle_socket.sendall(request)
 
         # Recebe confirmação de recebimento do servidor, print só ocorrerá após isso.
-        confirmation = self.vehicle_socket.recv(1024)
-        print(" Posto selecionado: {}".format(confirmation.decode('utf-8')))
+        confirmation = vehicle_socket.recv(4096)
+        confirmationDecoded = confirmationDecoded.decode()
 
-        # Fecha a conexão entre cliente/servidor
-        vehicle_socket.close()
-
-    def requestReservation(self, vehicle:Vehicle):
-
-        vehicle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        vehicle_socket.connect((self.server_host, self.server_port))
-
-        # Dicionário utilizado para selecionar os dados pertinentes para a nuvem ao pedir uma reserva
-        vData = {
-            "vid": vehicle.vid ,
-            "findReservation": True
+        reservation = {
+            "reservationID" : "" , 
+            "chargingStationID" : "" , 
+            "chargingPointID" : "" , 
+            "chargingPointPower" : "", 
+            "kWhPrice" : "" , 
+            "vehicleID" : "" , 
+            "startDateTime" : "", 
+            "finishDateTime" : "", 
+            "duration" : "" , 
+            "price" : ""
         }
 
-        # Cria um json baseado no dicionário "vData" e envia as informações para o servidor (Nuvem).
-        request = json.dumps(vData, indent=4).encode('utf-8')
-        self.vehicle_socket.sendall(request)
+        try:
+            dates = json.loads(confirmationDecoded)  # transforma JSON string em dict
+            reservation.update(dates)
 
-        # Recebe confirmação de recebimento do servidor, print só ocorrerá após isso.
-        confirmation = vehicle_socket.recv(1024)
-        print(" Reservas: {}".format(confirmation.decode('utf-8')))
+            print("Reserva efetuada: \n")
+            print(f" ID da reserva: {reservation['reservationID']} \n")
+            print(f" ID do posto: {reservation['chargingStationID']} \n")
+            print(f" ID do ponto de recarga: {reservation['chargingPointID']} \n")
+            print(f" Potência do ponto de carregamento: {reservation['chargingPointPower']} \n")
+            print(f" Preço por kWh: {reservation['kWhPrice']} \n")
+            print(f" ID do veículo: {reservation['vehicleID']} \n")
+            print(f" Início da recarga: {reservation['startDateTime']} \n")
+            print(f" Fim da recarga: {reservation['finishDateTime']} \n")
+            print(f" Duração : {reservation['duration']} \n")
+            print(f" Preço : {reservation['price']} \n")
+
+        except json.JSONDecodeError:
+            print("Erro ao decodificar JSON")
+
+        vehicle.archiveReservation(reservation)
 
         # Fecha a conexão entre cliente/servidor
         vehicle_socket.close()
+
 
     

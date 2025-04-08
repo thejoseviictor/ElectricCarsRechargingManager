@@ -69,11 +69,6 @@ maximumBattery = random.randint(30,50)
 
 vehicle = Vehicle(vid = vid, owner = owner, licensePlate = licensePlate, moneyCredit = moneyCredit, currentEnergy = currentEnergy, criticalEnergy = criticalEnergy, distanceFromDestination = 0, distanceFromChargingStation = 0, maximumBattery = maximumBattery)
 
-# Client ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-server_host = date["host"]
-server_port = date["port"]
-
 # Métodos utilitários --------------------------------------------------------------------------
 
 ''' Classe de utilidades, nela há a chamada para processos de comunicação,
@@ -95,9 +90,10 @@ while(repeat):
     utility.clearTerminal()
 
     print(" Bem vindo(a)! \n")
+    time.sleep(2)
 
-    
     wrongDate = True  # Váriavel usada para permitir ou não a entrada no sistema de acordo com os dados de login e senha
+    utility.clearTerminal()
     
     while(wrongDate):
 
@@ -147,12 +143,22 @@ while(repeat):
     '''
 
     if reply == "1" :
-        utility.simulation(vehicle, server_host, server_port)
+        realized = utility.simulation(vehicle)
+
+        if realized == True:
+            print("Reserva realizada !")
+            repeat = True
+
+        else:
+            print("Reserva não realizada! Tenha cuidado para não ficar sem carga!")
+            repeat = True
+            time.sleep(3)
+
     
     elif reply == "2" :
-        utility.showReservations(vehicle, server_host, server_port)
+        vehicle.showReservation()
 
-        reply = input("\n O que deseja agora: \n 1. Voltar para o início. \n 2. Fechar programa.")
+        reply = input("\n O que deseja agora: \n 1. Voltar para o início. \n 2. Fechar programa. \n ->")
 
         if reply == "1" :
             repeat = True

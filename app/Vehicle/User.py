@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class User:
+class User: # Informações básicas do próprietário do veículo
 
     cpf: str
     name: str

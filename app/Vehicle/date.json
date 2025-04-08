@@ -1,7 +1,7 @@
 
 {
-    "host" : "cloud_server" ,
-    "port" : 65432 ,
+    "host" : "cloud" ,
+    "port" : 64352 ,
 
     "cpf_user" : "12345678910" ,
     "name_user" : "João José Thiago da Silva" ,

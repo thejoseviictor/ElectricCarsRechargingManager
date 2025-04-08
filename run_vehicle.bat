@@ -4,7 +4,7 @@ echo  Iniciando o container vehicle_client...
 echo =============================================
 
 REM Navega até a pasta onde está o docker-compose.yml
-cd /d ".\app\Vehicle"
+cd /d "%~dp0app\Vehicle"
 
 REM Executa o container com terminal interativo
 docker compose run --rm -it --service-ports vehicle
