@@ -63,29 +63,29 @@ Este arquivo contém a classe "ChargingStationsFile", responsável por armazenar
 ### 3. ChargingPointsFile.py:
 A classe "ChargingPointsFile" manipula o arquivo "charging_points.json", que contém os pontos de carregamento disponíveis em cada posto de recarga.
 <br><br>Cada ponto é identificado por um "chargingPointID" único, e contém as seguintes informações:
-<br>• "chargingStationID": a qual posto de recarga ele pertence.
-<br>• "power": a potência do carregador em kW.
-<br>• "kWhPrice": o preço por kWh.
-<br>• "availability": o seu estado de disponibilidade, como "livre", "ocupado" ou "reservado".
+<br>• <b>"chargingStationID"</b>: a qual posto de recarga ele pertence.
+<br>• <b>"power"</b>: a potência do carregador em kW.
+<br>• <b>"kWhPrice"</b>: o preço por kWh.
+<br>• <b>"availability"</b>: o seu estado de disponibilidade, como "livre", "ocupado" ou "reservado".
 
 ### 4. ReservationsFile.py:
 A classe "ReservationsFile" interage com "reservations.json", armazenando, lendo, criando, editando e excluindo as reservas com as seguintes informações:
-•	"reservationID": seu ID, deve ser único para o mesmo ponto de carregamento.
-•	"chargingStationID": o ID do posto de recarga onde ela será realizada.
-•	"chargingPointID": o ID do ponto de carregamento onde ela será realizada.
-•	"chargingPointPower": a potência do carregador em kW.
-•	"kWhPrice": o preço por kWh.
-•	"vehicleID": o ID do veículo que usará a reserva.
-•	"duration": o tempo necessário em horas para finalizar a carga completa do veículo.
-•	"startDateTime": a data e hora de início da reserva.
-•	"finishDateTime": a data e hora de finalização da reserva, a data de início somada com o tempo necessário para finalizar uma carga completa do veículo.
-•	"price": o preço da reserva, a ser pago.
+<br>• <b>"reservationID"</b>: seu ID, deve ser único para o mesmo ponto de carregamento.
+<br>• <b>"chargingStationID"</b>: o ID do posto de recarga onde ela será realizada.
+<br>• <b>"chargingPointID"</b>: o ID do ponto de carregamento onde ela será realizada.
+<br>• <b>"chargingPointPower"</b>: a potência do carregador em kW.
+<br>• <b>"kWhPrice"</b>: o preço por kWh.
+<br>• <b>"vehicleID"</b>: o ID do veículo que usará a reserva.
+<br>• <b>"duration"</b>: o tempo necessário em horas para finalizar a carga completa do veículo.
+<br>• <b>"startDateTime"</b>: a data e hora de início da reserva.
+<br>• <b>"finishDateTime"</b>: a data e hora de finalização da reserva, a data de início somada com o tempo necessário para finalizar uma carga completa do veículo.
+<br>• <b>"price"</b>: o preço da reserva, a ser pago.
 
 ### 5. Informações sobre o Dockerfile e Docker Compose do servidor:
 A imagem base utilizada foi "python:3.13.2".
-Os arquivos para gerar a imagem são copiadas do diretório "src/Cloud".
-O arquivo principal a ser executado é "Cloud.py".
-O nome do container do servidor será "cloud_server".
-A variável de ambiente "PYTHONUNBUFFERED=1" foi definida, para permitir a exibição dos prints no terminal.
-A rede ao qual o servidor estará conectado é "recharging_manager".
-A porta do servidor exposta é "64352".
+<br><br>Os arquivos para gerar a imagem são copiadas do diretório "src/Cloud".
+<br><br>O arquivo principal a ser executado é "Cloud.py".
+<br><br>O nome do container do servidor será "cloud_server".
+<br><br>A variável de ambiente "PYTHONUNBUFFERED=1" foi definida, para permitir a exibição dos prints no terminal.
+<br><br>A rede ao qual o servidor estará conectado é "recharging_manager".
+<br><br>A porta do servidor exposta é "64352".
