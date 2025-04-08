@@ -62,11 +62,11 @@ Este arquivo contém a classe "ChargingStationsFile", responsável por armazenar
 
 ### 3. ChargingPointsFile.py:
 A classe "ChargingPointsFile" manipula o arquivo "charging_points.json", que contém os pontos de carregamento disponíveis em cada posto de recarga.
-Cada ponto é identificado por um "chargingPointID" único, e contém as seguintes informações:
-•	"chargingStationID": a qual posto de recarga ele pertence.
-•	"power": a potência do carregador em kW.
-•	"kWhPrice": o preço por kWh.
-•	"availability": o seu estado de disponibilidade, como "livre", "ocupado" ou "reservado".
+<br><br>Cada ponto é identificado por um "chargingPointID" único, e contém as seguintes informações:
+<br>• "chargingStationID": a qual posto de recarga ele pertence.
+<br>• "power": a potência do carregador em kW.
+<br>• "kWhPrice": o preço por kWh.
+<br>• "availability": o seu estado de disponibilidade, como "livre", "ocupado" ou "reservado".
 
 ### 4. ReservationsFile.py:
 A classe "ReservationsFile" interage com "reservations.json", armazenando, lendo, criando, editando e excluindo as reservas com as seguintes informações:
