@@ -16,46 +16,46 @@ Este é o servidor principal do sistema. Ele é responsável por iniciar o socke
 <br><br>O servidor escuta qualquer dispositivo conectado na mesma rede local, que se comunica com a porta "64352".
 <br><br>Ao receber uma requisição, interpreta o conteúdo em JSON, analisa qual ação é necessária, através de uma chave/campo de ação para cada solicitação do cliente, e executa a ação correspondente.
 <br><br>Campos/Chaves no JSON enviado pelo Cliente e suas ações no servidor:
-•	newChargingStation: 
+<br>•	newChargingStation: 
 o	o cliente do posto de recarga solicita a criação e salvamento de suas informações no banco de dados do servidor.
 o	o servidor responde com o ID cadastrado para o posto de recarga no banco de dados.
-•	updateChargingStation: 
+<br>•	updateChargingStation: 
 o	o cliente do posto de recarga solicita a atualização de sua localização no banco de dados do servidor.
 o	o servidor responde com a string: "Sucesso".
-•	deleteChargingStation: 
+<br>•	deleteChargingStation: 
 o	o cliente do posto de recarga solicita a sua exclusão do banco de dados do servidor.
 o	o servidor responde com a string: "Sucesso".
-•	newChargingPoint: 
+<br>•	newChargingPoint: 
 o	o cliente do posto de recarga solicita a criação e salvamento de um dos seus pontos de carregamento no banco de dados do servidor.
 o	o servidor responde com o ID cadastrado para o ponto de carregamento no banco de dados.
-•	updateChargingPoint: 
+<br>•	updateChargingPoint: 
 o	o cliente do posto de recarga solicita a atualização das informações de um dos seus pontos de carregamento no banco de dados do servidor.
 o	o servidor responde com a string: "Sucesso".
-•	deleteChargingPoint: 
+<br>•	deleteChargingPoint: 
 o	o cliente do posto de recarga solicita a exclusão de um dos seus pontos de carregamento no banco de dados do servidor.
 o	o servidor responde com a string: "Sucesso".
-•	receiveAllChargingPoints: 
+<br>•	receiveAllChargingPoints: 
 o	o cliente do posto de recarga solicita uma lista de todos os seus pontos de carregamento e suas respectivas informações do banco de dados.
 o	o servidor responde com um JSON com todos os pontos de carregamento.
-•	receiveAllReservations: 
+<br>•	receiveAllReservations: 
 o	o cliente do posto de recarga solicita uma lista com informações de todas as reservas, para todos os seus pontos de carregamento, no banco de dados.
 o	o servidor responde com um JSON com todas as reservas agendadas.
-•	scheduleReservation:
+<br>•	scheduleReservation:
 o	o cliente do veículo solicita o agendamento de uma reserva, pois a bateria está no nível crítico.
 o	o servidor responde com as informações do agendamento para um ponto de carregamento com a fila vazia, ou com o menor tempo de espera, no posto de recarga mais próximo.
-•	findReservation: 
+<br>•	findReservation: 
 o	o cliente do veículo solicita as informações de sua reserva agendada, se existir alguma.
 o	o servidor responde com um JSON com as informações da reserva, armazenados no banco de dados.
-•	deleteReservation: 
+<br>•	deleteReservation: 
 o	o cliente do veículo solicita a exclusão de uma reserva agendada.
 o	o servidor responde com a string: "Sucesso".
-Cada ação é tratada por meio de classes auxiliares, que manipulam os dados nas listas e os atualizam no banco de dados em JSON, como: ReservationsFile (Para Reservas), ChargingPointsFile (Para Pontos de Carregamento) e ChargingStationsFile (Para Posto de Recarga).
-Além disso, caso ocorra um dos seguintes erros na solicitação, o servidor irá responder com a string "None":
-•	Não existem postos de recarga ou pontos de carregamento cadastrados;
-•	Posto de recarga não encontrado, para atualização ou exclusão;
-•	Ponto de carregamento não encontrado, para atualização ou exclusão;
-•	Não existem reservas cadastradas para o posto de recarga ou veículo;
-•	A reserva não foi encontrada, para exclusão.
+<br><br>Cada ação é tratada por meio de classes auxiliares, que manipulam os dados nas listas e os atualizam no banco de dados em JSON, como: ReservationsFile (Para Reservas), ChargingPointsFile (Para Pontos de Carregamento) e ChargingStationsFile (Para Posto de Recarga).
+<br><br>Além disso, caso ocorra um dos seguintes erros na solicitação, o servidor irá responder com a string "None":
+<br>•	Não existem postos de recarga ou pontos de carregamento cadastrados;
+<br>•	Posto de recarga não encontrado, para atualização ou exclusão;
+<br>•	Ponto de carregamento não encontrado, para atualização ou exclusão;
+<br>•	Não existem reservas cadastradas para o posto de recarga ou veículo;
+<br>•	A reserva não foi encontrada, para exclusão.
 
 ### 2. ChargingStationsFile.py:
 Este arquivo contém a classe "ChargingStationsFile", responsável por armazenar, manipular e recuperar os dados dos postos de recarga, a partir do arquivo "charging_stations.json". Os postos de recargas são identificados por um "chargingStationID" único, e cada um deve conter uma localização única nas coordenadas "x" e "y" do plano cartesiano.
