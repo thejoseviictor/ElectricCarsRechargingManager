@@ -19,34 +19,34 @@ Este é o servidor principal do sistema. Ele é responsável por iniciar o socke
 <br>• <b>newChargingStation</b>: 
     <br>• o cliente do posto de recarga solicita a criação e salvamento de suas informações no banco de dados do servidor.
     <br>• o servidor responde com o ID cadastrado para o posto de recarga no banco de dados.
-<br><br>• updateChargingStation: 
+<br><br>• <b>updateChargingStation</b>: 
     <br>• o cliente do posto de recarga solicita a atualização de sua localização no banco de dados do servidor.
     <br>• o servidor responde com a string: "Sucesso".
-<br><br>• deleteChargingStation: 
+<br><br>• <b>deleteChargingStation</b>: 
     <br>• o cliente do posto de recarga solicita a sua exclusão do banco de dados do servidor.
     <br>• o servidor responde com a string: "Sucesso".
-<br><br>• newChargingPoint: 
+<br><br>• <b>newChargingPoint</b>: 
     <br>• o cliente do posto de recarga solicita a criação e salvamento de um dos seus pontos de carregamento no banco de dados do servidor.
     <br>• o servidor responde com o ID cadastrado para o ponto de carregamento no banco de dados.
-<br><br>• updateChargingPoint: 
+<br><br>• <b>updateChargingPoint</b>: 
     <br>• o cliente do posto de recarga solicita a atualização das informações de um dos seus pontos de carregamento no banco de dados do servidor.
     <br>• o servidor responde com a string: "Sucesso".
-<br><br>• deleteChargingPoint: 
+<br><br>• <b>deleteChargingPoint</b>: 
     <br>• o cliente do posto de recarga solicita a exclusão de um dos seus pontos de carregamento no banco de dados do servidor.
     <br>• o servidor responde com a string: "Sucesso".
-<br><br>• receiveAllChargingPoints: 
+<br><br>• <b>receiveAllChargingPoints</b>: 
     <br>• o cliente do posto de recarga solicita uma lista de todos os seus pontos de carregamento e suas respectivas informações do banco de dados.
     <br>• o servidor responde com um JSON com todos os pontos de carregamento.
-<br><br>• receiveAllReservations: 
+<br><br>• <b>receiveAllReservations</b>: 
     <br>• o cliente do posto de recarga solicita uma lista com informações de todas as reservas, para todos os seus pontos de carregamento, no banco de dados.
     <br>• o servidor responde com um JSON com todas as reservas agendadas.
-<br><br>• scheduleReservation:
+<br><br>• <b>scheduleReservation</b>:
     <br>• o cliente do veículo solicita o agendamento de uma reserva, pois a bateria está no nível crítico.
     <br>• o servidor responde com as informações do agendamento para um ponto de carregamento com a fila vazia, ou com o menor tempo de espera, no posto de recarga mais próximo.
-<br><br>• findReservation: 
+<br><br>• <b>findReservation</b>: 
     <br>• o cliente do veículo solicita as informações de sua reserva agendada, se existir alguma.
     <br>• o servidor responde com um JSON com as informações da reserva, armazenados no banco de dados.
-<br><br>• deleteReservation: 
+<br><br>• <b>deleteReservation</b>: 
     <br>• o cliente do veículo solicita a exclusão de uma reserva agendada.
     <br>• o servidor responde com a string: "Sucesso".
 <br><br>Cada ação é tratada por meio de classes auxiliares, que manipulam os dados nas listas e os atualizam no banco de dados em JSON, como: ReservationsFile (Para Reservas), ChargingPointsFile (Para Pontos de Carregamento) e ChargingStationsFile (Para Posto de Recarga).
