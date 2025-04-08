@@ -2,12 +2,12 @@
 
 ## Arquitetura do Sistema da Nuvem:
 O sistema e servidor do container “Nuvem”, implementado no arquivo “Cloud.py” através do “socket” em Python, é responsável por receber requisições dos clientes (veículos ou postos de recarga), armazenar informações sobre postos disponíveis e seus pontos de carregamento e reservas em um banco de dados em arquivo JSON, e processar ações como: criar ou apagar uma reserva, cadastrar ou excluir um posto, descobrir o posto mais próximo do veículo, através de um plano cartesiano, entre outros.
-O servidor utiliza multithreading para lidar com a concorrência entre múltiplas conexões simultâneas, evitando que o socket deixe outras requisições esperando, enquanto uma já está sendo atendida. Dessa maneira, cada nova requisição feita ao servidor pelo cliente, gera um novo thread para atendê-la.
-O multithreading foi escolhido pois é mais simples de implementar e suficiente para o sistema. 
-O servidor aceita requisições de qualquer dispositivo na rede local, mas primeiro é necessário criar uma rede personalizada no Docker através do seguinte comando:
+<br><br>O servidor utiliza multithreading para lidar com a concorrência entre múltiplas conexões simultâneas, evitando que o socket deixe outras requisições esperando, enquanto uma já está sendo atendida. Dessa maneira, cada nova requisição feita ao servidor pelo cliente, gera um novo thread para atendê-la.
+<br><br>O multithreading foi escolhido pois é mais simples de implementar e suficiente para o sistema. 
+<br><br>O servidor aceita requisições de qualquer dispositivo na rede local, mas primeiro é necessário criar uma rede personalizada no Docker através do seguinte comando:
 “docker network create recharging_manager”
-E então, conectar o cliente ao servidor através dessa rede e do host “cloud_server” na porta “64352”.
-A imagem do servidor pode ser executada através do docker-compose, acessando o diretório “app/Cloud” e executando o seguinte comando através do terminal:
+<br><br>E então, conectar o cliente ao servidor através dessa rede e do host “cloud_server” na porta “64352”.
+<br><br>A imagem do servidor pode ser executada através do docker-compose, acessando o diretório “app/Cloud” e executando o seguinte comando através do terminal:
 “docker compose up --build"
 
 ## Estrutura dos Arquivos da Nuvem:
