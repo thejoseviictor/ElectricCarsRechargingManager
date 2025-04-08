@@ -83,9 +83,9 @@ A classe "ReservationsFile" interage com "reservations.json", armazenando, lendo
 
 ### 5. Informações sobre o Dockerfile e Docker Compose do servidor:
 A imagem base utilizada foi "python:3.13.2".
-<br><br>Os arquivos para gerar a imagem são copiadas do diretório "src/Cloud".
-<br><br>O arquivo principal a ser executado é "Cloud.py".
-<br><br>O nome do container do servidor será "cloud_server".
-<br><br>A variável de ambiente "PYTHONUNBUFFERED=1" foi definida, para permitir a exibição dos prints no terminal.
-<br><br>A rede ao qual o servidor estará conectado é "recharging_manager".
-<br><br>A porta do servidor exposta é "64352".
+<br>Os arquivos para gerar a imagem são copiadas do diretório "src/Cloud".
+<br>O arquivo principal a ser executado é "Cloud.py".
+<br>O nome do container do servidor será "cloud_server".
+<br>A variável de ambiente "PYTHONUNBUFFERED=1" foi definida, para permitir a exibição dos prints no terminal.
+<br>A rede ao qual o servidor estará conectado é "recharging_manager".
+<br>A porta do servidor exposta é "64352".
