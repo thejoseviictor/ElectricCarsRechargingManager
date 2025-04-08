@@ -16,7 +16,7 @@ Este é o servidor principal do sistema. Ele é responsável por iniciar o socke
 <br><br>O servidor escuta qualquer dispositivo conectado na mesma rede local, que se comunica com a porta "64352".
 <br><br>Ao receber uma requisição, interpreta o conteúdo em JSON, analisa qual ação é necessária, através de uma chave/campo de ação para cada solicitação do cliente, e executa a ação correspondente.
 <br><br>Campos/Chaves no JSON enviado pelo Cliente e suas ações no servidor:
-<br>• newChargingStation: 
+<br>• ####newChargingStation: 
     <br>• o cliente do posto de recarga solicita a criação e salvamento de suas informações no banco de dados do servidor.
     <br>• o servidor responde com o ID cadastrado para o posto de recarga no banco de dados.
 <br><br>• updateChargingStation: 
