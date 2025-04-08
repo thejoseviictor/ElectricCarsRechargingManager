@@ -1,9 +1,7 @@
 # version: "3.8"
 
 # Conexão usada para comunicação socket TCP/IP 
-networks:
-  recharging_manager:
-    driver: bridge
+
 
 services:
   vehicle: # Nome do Client
@@ -27,3 +25,7 @@ services:
 
     networks: # Definindo a network que será usada
       - recharging_manager
+
+networks:
+  recharging_manager:
+    external: true

@@ -1,5 +1,4 @@
 '''
-Autor: João Victor Macedo dos Santos Lima
 Grupo: João Macedo, José Vitor e Thiago 
 
 Componente Curricular: TEC502 - MI - Concorrência e conectividade 
@@ -80,6 +79,8 @@ utility = VehicleUtility()
 
 # Início do sistema
 
+firstLogin = True # Variavel para indicar que apenas um login é preciso.
+
 while(repeat):
 
     utility.clearTerminal()
@@ -94,26 +95,29 @@ while(repeat):
 
     wrongDate = True  # Váriavel usada para permitir ou não a entrada no sistema de acordo com os dados de login e senha
     utility.clearTerminal()
+
+    if(firstLogin):
     
-    while(wrongDate):
+        while(wrongDate):
 
-        login = input("LOGIN: \t ") # Pede o login com cpf ou email do usuário (jjt@gmail.com ou 12345678910)
-        utility.clearTerminal()
-        password = input("SENHA: \t ") # Pede a senha de úsuario (123456car)
-        utility.clearTerminal()
-
-
-        if (login == vehicle.owner.cpf or login == vehicle.owner.email) and password == vehicle.owner.password:
-            print (" Login realizado com sucesso ! ")
-            time.sleep(3)
+            login = input("LOGIN: \t ") # Pede o login com cpf ou email do usuário (jjt@gmail.com ou 12345678910)
             utility.clearTerminal()
-            wrongDate = False
-
-        else :
-            print(" Login ou senha incorreta. Tente novamente !")
-            time.sleep(3)
+            password = input("SENHA: \t ") # Pede a senha de úsuario (123456car)
             utility.clearTerminal()
-            wrongDate = True
+
+
+            if (login == vehicle.owner.cpf or login == vehicle.owner.email) and password == vehicle.owner.password:
+                print (" Login realizado com sucesso ! ")
+                time.sleep(3)
+                utility.clearTerminal()
+                wrongDate = False
+                firstLogin = False
+
+            else :
+                print(" Login ou senha incorreta. Tente novamente !")
+                time.sleep(3)
+                utility.clearTerminal()
+                wrongDate = True
  
 
     print(" O que deseja fazer? \n")

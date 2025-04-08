@@ -35,8 +35,8 @@ class VehicleClient:
         # Dicionário utilizado para selecionar os dados pertinentes para a nuvem ao pedir uma reserva
         vData = {
             "vid": vehicle.vid ,
-            "x": vehicle.coordinates(0) ,
-            "y": vehicle.coordinates(1) ,
+            "x": vehicle.coordinates[0] ,
+            "y": vehicle.coordinates[1] ,
             "actualBatteryPercentage": vehicle.currentEnergy ,
             "batteryCapacity" : vehicle.maximumBattery ,
             "scheduleReservation" : True
@@ -48,7 +48,7 @@ class VehicleClient:
 
         # Recebe confirmação de recebimento do servidor, print só ocorrerá após isso.
         confirmation = vehicle_socket.recv(4096)
-        confirmationDecoded = confirmationDecoded.decode()
+        confirmationDecoded = confirmation.decode()
 
         reservation = {
             "reservationID" : "" , 
@@ -63,24 +63,20 @@ class VehicleClient:
             "price" : ""
         }
 
-        try:
-            dates = json.loads(confirmationDecoded)  # transforma JSON string em dict
-            reservation.update(dates)
+        dates = json.loads(confirmationDecoded)  # transforma JSON string em dict
+        reservation.update(dates)
 
-            print("Reserva efetuada: \n")
-            print(f" ID da reserva: {reservation['reservationID']} \n")
-            print(f" ID do posto: {reservation['chargingStationID']} \n")
-            print(f" ID do ponto de recarga: {reservation['chargingPointID']} \n")
-            print(f" Potência do ponto de carregamento: {reservation['chargingPointPower']} \n")
-            print(f" Preço por kWh: {reservation['kWhPrice']} \n")
-            print(f" ID do veículo: {reservation['vehicleID']} \n")
-            print(f" Início da recarga: {reservation['startDateTime']} \n")
-            print(f" Fim da recarga: {reservation['finishDateTime']} \n")
-            print(f" Duração : {reservation['duration']} \n")
-            print(f" Preço : {reservation['price']} \n")
-
-        except json.JSONDecodeError:
-            print("Erro ao decodificar JSON")
+        print("Reserva efetuada: \n")
+        print(f" ID da reserva: {reservation['reservationID']} \n")
+        print(f" ID do posto: {reservation['chargingStationID']} \n")
+        print(f" ID do ponto de recarga: {reservation['chargingPointID']} \n")
+        print(f" Potência do ponto de carregamento: {reservation['chargingPointPower']} \n")
+        print(f" Preço por kWh: {reservation['kWhPrice']} \n")
+        print(f" ID do veículo: {reservation['vehicleID']} \n")
+        print(f" Início da recarga: {reservation['startDateTime']} \n")
+        print(f" Fim da recarga: {reservation['finishDateTime']} \n")
+        print(f" Duração : {reservation['duration']} \n")
+        print(f" Preço : {reservation['price']} \n")
 
         vehicle.archiveReservation(reservation)
 
