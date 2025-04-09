@@ -100,7 +100,7 @@ while(repeat):
     
         while(wrongDate):
 
-            login = input("LOGIN: \t ") # Pede o login com cpf ou email do usuário (jjt@gmail.com ou 12345678910)
+            login = input("LOGIN (CPF ou Email): \t ") # Pede o login com cpf ou email do usuário (jjt@gmail.com ou 12345678910)
             utility.clearTerminal()
             password = input("SENHA: \t ") # Pede a senha de úsuario (123456car)
             utility.clearTerminal()
